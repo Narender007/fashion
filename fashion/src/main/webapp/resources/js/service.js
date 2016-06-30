@@ -1,4 +1,4 @@
-var path = "http://192.168.1.10:2015/fashion";
+var path = "/fashion";
 
 angular.module("fashion_services",[ ])
 .service('loginService',['$http','$q',function($http,$q){
