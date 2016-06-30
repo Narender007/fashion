@@ -14,6 +14,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	      templateUrl: "resources/templates/login.jsp",
 	      controller:"loginCtrl"
 	    })
+
+          .state('lockScreen', {
+              url: "/lockScreen",
+              templateUrl: "resources/templates/lock.jsp",
+              controller:"lockCtrl"
+          })
 	    
 	    .state('admin', {
 		      url: "/admin",
@@ -37,10 +43,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			  url:"/userForm/:id",
 			  templateUrl:"resources/templates/admin/usermasterform.jsp",
 			  controller:"userMasterFormCtrl"
-		}) 
-		  
-		    
-	  
-	});
+		})
+
+
+
+
+});
 
 

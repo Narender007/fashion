@@ -86,4 +86,25 @@
     margin-top:30px
 }
 
+.lock-backdrop{
+    position:fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 12;
+    background-color:rgba(165, 224, 244, 0.94);
+}
+
+.center-form-lock{
+    max-width: 400px;
+    margin: auto;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    height:330px;
+    min-height: 300px;
+}
 

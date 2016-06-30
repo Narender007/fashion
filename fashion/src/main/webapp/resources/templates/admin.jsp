@@ -58,7 +58,7 @@
 		            <li><a ui-sref="admin.dashbord">DashBord</a></li>
 		            <li><a href="#">My Profile</a></li>
 		            <li role="separator" class="divider"></li>
-		            <li><a href="#">Lock Screen</a></li>
+		            <li><a ui-sref="lockScreen">Lock Screen</a></li>
 		            <li><a href="/fashion/logout">Log Out</a></li>
 		          </ul>
 		        </div>
