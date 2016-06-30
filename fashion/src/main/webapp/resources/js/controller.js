@@ -1,9 +1,10 @@
 angular.module("fashion_controller",[ ])
-.controller('mother_controller',['$scope','$mdDialog', '$mdMedia','$state',function($scope,$mdDialog, $mdMedia,$state){
+.controller('mother_controller',['$scope','$mdDialog', '$mdMedia','$state','$rootScope',function($scope,$mdDialog, $mdMedia,$state,$rootScope){
 	console.log("mother");
 	// define sone regex for ng-pattern
 	$scope.alphanumeric_nospecial = '/^[a-zA-Z0-9]+$/';
 	$scope.number8 = '/^([0-9]{8})?$/';
+	$rootScope.currentUser;
 	
 	// Define Global alert function
 	$scope.masterAlert = function(type,msg,ev){
@@ -49,7 +50,7 @@ angular.module("fashion_controller",[ ])
 	
 }])
 
-.controller('loginCtrl',['$scope','loginService','$state',function($scope,loginService,$state){
+.controller('loginCtrl',['$scope','loginService','$state','$rootScope',function($scope,loginService,$state,$rootScope){
 	console.log("login ctrl");
 	$scope.userData = {};
 	
@@ -75,6 +76,7 @@ angular.module("fashion_controller",[ ])
 	   	                else{
 	   	                	console.log("Login successful");
 	   	                	var user = JSON.parse(responseData.user);
+	   	                	$rootScope.currentUser = user;
 	   	                	if(user.userRole == "1")
 	   	                		{
 	   	                		  $state.go('admin.dashbord');
@@ -88,6 +90,25 @@ angular.module("fashion_controller",[ ])
     }
 	
   	
+}])
+
+.controller('lockCtrl',['$scope','$rootScope','$window',function($scope,$rootScope,$window){
+	console.log("lockCtrl");
+	//console.log($rootScope.currentUser);
+	console.log("Locked user is " + $rootScope.currentUser.password);
+	   
+	 $( ".passwordlock" ).keyup(function() {
+		  $scope.match($rootScope.currentUser.password,$scope.passwordll);
+		});
+	 $scope.match = function(cpass,pass){
+		 console.log(cpass);
+		  console.log(pass);
+		  if(cpass == pass){
+			  $window.history.back();
+		  }
+	 }
+	 
+	
 }])
 
 .controller('adminDashCtrl',['$scope',function($scope){

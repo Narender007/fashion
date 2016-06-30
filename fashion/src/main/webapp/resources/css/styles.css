@@ -106,5 +106,18 @@
     bottom: 0px;
     height:330px;
     min-height: 300px;
+    text-align:center;
+    z-index:13;
+}
+
+.center-form-lock h3{
+	font-family:serif;
+	margin-top:0px;
+}
+
+.center-form-lock .passwordlock{
+	width:50%;
+	text-align:center;
+	margin:auto;
 }
 

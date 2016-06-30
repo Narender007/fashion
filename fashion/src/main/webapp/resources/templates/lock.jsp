@@ -13,5 +13,5 @@
         <div class="center-form-lock">
               <img src="resources/images/admin.png" />
               <h3> <%= s %> </h3>
-        <input type="password" class="form-control" name="password" ng-model="formdata.password"  ng-model-options="{ updateOn: 'blur' }" placeholder="password" required="">
+        <input type="password" class="form-control passwordlock"  name="password" ng-model="passwordll"   placeholder="Password" required="" autofocus>
         </div>
