@@ -1,0 +1,89 @@
+@CHARSET "UTF-8";
+
+.index-glass{
+	position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 10;
+    background-color: rgba(210, 196, 196, 0.5);
+}
+
+#topView{
+	position:fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 12;
+}
+
+.loginformPanel{
+	max-width: 500px;
+    margin: auto;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    height:330px;
+    min-height: 300px;
+}
+
+.has-header{
+	padding-top:50px;
+}
+
+.alert {
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+#adminAvatar{
+	padding: 5px;
+    background-color: #cac6c6;
+    border-radius: 28px;
+    left: -5px;
+}
+#adminAvatar img{
+	max-width:40px;
+	max-height:40px;
+}
+
+.tablePanel{
+	max-width: 80%;
+    margin: auto;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    height:500px;
+    min-height: 300px;
+}
+
+.admin-section{
+	position: absolute;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.admin-container{
+	position: absolute;
+    height: 100%;
+    margin: auto;
+    width: 100%;
+    overflow: auto;
+}
+
+.formPanel{
+	max-width: 80%;
+    margin: auto;
+    position: relative;
+    margin-top:30px
+}
+
+
