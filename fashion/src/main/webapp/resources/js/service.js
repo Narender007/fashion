@@ -86,5 +86,73 @@ angular.module("fashion_services",[ ])
 	  
   }// outer return end
 }])
+	
+	.service('rolemasterservice',['$http','$q', function($http,$q){
+		return{
+			fetchallrole: function(){
+				return $http.get(path + '/getAllRole/')
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while fetching role');
+							return $q.reject(errResponse);
+						});
+			},   // fetchallrole
+
+			addRole: function(data){
+				return $http.post(path + '/createRole/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while creating Role');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			fetchRoleByID: function (data) {
+				return $http.get(path + '/getRoleById/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Geting Role by id');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // fetchRoleByID
+
+			editRole: function(data){
+				return $http.post(path + '/updateRole/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while updating Role');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+			deleteRole: function (data) {
+				return $http.get(path + '/deleteRole/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Deleting  Role');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // DeleteRole
+
+		}// outer return end
+	}])
 
 

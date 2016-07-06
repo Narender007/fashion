@@ -46,6 +46,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		})
 
 
+		  .state('admin.rolemastertable',{
+			  url:"/roleMaster",
+			  templateUrl:"resources/templates/admin/rolemastertable.jsp",
+			  controller:"roleMasterTableCtrl"
+		  })
+
+		  .state('admin.roleAddEdit',{
+			  url:"/roleForm/:id",
+			  templateUrl:"resources/templates/admin/rolemasterform.jsp",
+			  controller:"roleMasterFormCtrl"
+		  })
+
+
+
+
 
 
 });

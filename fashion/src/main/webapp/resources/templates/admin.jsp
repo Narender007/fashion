@@ -40,7 +40,7 @@
 		          <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
 		            <li><a ui-sref="admin.usermastertable">User Master</a></li>
-		            <li><a href="#">Role Master</a></li>
+		            <li><a ui-sref="admin.rolemastertable">Role Master</a></li>
 		          </ul>
 		        </li>
 		        <!-- user dwopdown ends -->
