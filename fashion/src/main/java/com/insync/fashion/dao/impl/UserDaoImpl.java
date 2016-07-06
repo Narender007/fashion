@@ -13,8 +13,6 @@ import com.insync.fashion.util.HibernateUtils;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-//import java.math.BigInteger;
-//import java.util.ArrayList;
 import org.json.simple.JSONObject;
 
 @Repository
