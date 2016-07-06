@@ -539,7 +539,7 @@ angular.module("fashion_controller",[ ])
                         else{
                             console.log("Edit successful");
                             $scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
-                                $state.go('admin.Rolemastertable');
+                                $state.go('admin.rolemastertable');
                             });
                         }
                     },

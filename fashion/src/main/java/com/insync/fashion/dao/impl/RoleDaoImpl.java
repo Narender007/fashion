@@ -64,7 +64,7 @@ public class RoleDaoImpl implements RoleDao {
 	public boolean isnameConflict(Role role) {
 		// TODO Auto-generated method stub
 				boolean result = true;
-				org.hibernate.Query query = (org.hibernate.Query) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE userName =:rolename");
+				org.hibernate.Query query = (org.hibernate.Query) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE rolename =:rolename");
 				 query.setParameter("rolename", role.getRoleName());
 				
 				List<Role> roleList =  query.list();
@@ -81,7 +81,7 @@ public class RoleDaoImpl implements RoleDao {
 	public boolean editnameConflict(Role role) {
 		// TODO Auto-generated method stub
 		boolean result = true;
-		org.hibernate.Query query = (org.hibernate.Query) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE userName =:rolename and id !="+ role.getId());
+		org.hibernate.Query query = (org.hibernate.Query) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE rolename =:rolename and id !="+ role.getId());
 		 query.setParameter("rolename", role.getRoleName());
 		
 		List<Role> roleList =  query.list();

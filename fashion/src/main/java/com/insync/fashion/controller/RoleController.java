@@ -39,7 +39,7 @@ public class RoleController {
 	
 	// create a role
 	   @SuppressWarnings("unchecked")
-	   @RequestMapping(value = "/createUser/", method = RequestMethod.POST)
+	   @RequestMapping(value = "/createRole/", method = RequestMethod.POST)
 	    public ResponseEntity<String> createRole(@RequestBody Role role,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
