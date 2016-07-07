@@ -155,4 +155,77 @@ angular.module("fashion_services",[ ])
 		}// outer return end
 	}])
 
+// store and warehouse services
+
+	.service('sandwmasterservice',['$http','$q', function($http,$q){
+		return{
+			fetchallsandw: function(){
+				return $http.get(path + '/getAllStore/')
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while fetching store');
+							return $q.reject(errResponse);
+						});
+			},   // fetchallsandw
+
+			addsandw: function(data){
+				return $http.post(path + '/createStore/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while creating sandw');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			fetchsandwByID: function (data) {
+				return $http.get(path + '/getStoreById/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Geting sandw by id');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // fetchRoleByID
+
+			editsandw: function(data){
+				return $http.post(path + '/updateStore/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while updating sandw');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+			deletesandw: function (data) {
+				return $http.get(path + '/deleteRole/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Deleting  sandw');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // Deletesandw
+
+		}// outer return end
+	}])
+
+// store and warehouse service ends
+
+
 

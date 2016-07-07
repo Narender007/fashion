@@ -45,7 +45,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			  controller:"userMasterFormCtrl"
 		})
 
-
 		  .state('admin.rolemastertable',{
 			  url:"/roleMaster",
 			  templateUrl:"resources/templates/admin/rolemastertable.jsp",
@@ -56,6 +55,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			  url:"/roleForm/:id",
 			  templateUrl:"resources/templates/admin/rolemasterform.jsp",
 			  controller:"roleMasterFormCtrl"
+		  })
+
+     //// warehouse and store controlling views
+		  .state('admin.sandwmastertable',{
+			  url:"/sandwMaster",
+			  templateUrl:"resources/templates/admin/sandwmastertable.jsp",
+			  controller:"sandwMasterTableCtrl"
+		  })
+
+		  .state('admin.sandwAddEdit',{
+			  url:"/sandwForm/:id",
+			  templateUrl:"resources/templates/admin/sandwmasterform.jsp",
+			  controller:"sandwMasterFormCtrl"
 		  })
 
 

@@ -458,7 +458,7 @@ angular.module("fashion_controller",[ ])
                         if(responseData.msgtype == "ERROR")
                         {
                             $scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
-                                $state.go('admin.usermastertable');
+                                $state.go('admin.rolemastertable');
                             });
                         }
                         else{
@@ -483,7 +483,7 @@ angular.module("fashion_controller",[ ])
                 userform.$setPristine();
                 userform.$setUntouched();
             }
-            $scope.formdata = angular.copy($scope.userData);
+            $scope.formdata = angular.copy($scope.roleData);
         };
 
         $scope.cancel = function(){
@@ -563,3 +563,225 @@ angular.module("fashion_controller",[ ])
         }
 
     }]) // user master form control
+
+  // store and warehouse controllers
+
+
+	.controller('sandwMasterTableCtrl',['$scope','sandwmasterservice','$state',function($scope,sandwmasterservice,$state){
+		console.log('sandwMasterTableCtrl');
+
+		$scope.initEvent = function(){
+			$('#userTable tbody').on( 'click', '.tdelete', function () {
+				console.log("delete called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				// call master confirm
+				var msg = "Delete Information";
+				var msgBody = "Are You Sure you want to delete  " + data.type  + " " +data.roleName;
+				$scope.masterConf(msg,msgBody,function(result){
+					if(result){
+						$scope.deletesandw(data.id);
+					}else{
+						// you decided not to delete
+					}
+				});
+
+			});
+
+			$('#userTable tbody').on( 'click', '.tedit', function () {
+				console.log("edit called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				$scope.editsandw(data.id);
+			});
+		}
+
+		// function for edit
+		$scope.editsandw = function(userid){
+			// go to add or edit screen
+			var param = {};
+			param.id = userid;
+			$state.go('admin.sandwAddEdit',param);
+		}
+
+		$scope.deletesandw = function(id){
+			console.log(id);
+			sandwmasterservice.deletesandw(id)
+				.then(function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterAlert(responseData.msgtype,responseData.msg,null);
+						}
+						else{
+							console.log("Deleted successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$scope.fetchAllsandw();
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					});
+
+		}
+
+
+
+		$scope.userTable = null;
+		$scope.fetchAllsandw = function(){
+			if($scope.userTable != null)
+			{
+				$scope.userTable.destroy();
+			}
+			// call service methord
+			sandwmasterservice.fetchallsandw()
+				.then(
+					function(responseData){
+						console.log(responseData);
+						$scope.userTable = $('#userTable').DataTable( {
+							"data":   responseData ,
+							"destroy": true,
+							"columns": [
+								{ "data": "id" },
+								{ "data": "Name" },
+								{ "data": null }
+							],
+							"columnDefs": [ {
+								"targets": -1,
+								"data": null,
+								"defaultContent": "<button class='tedit'>Edit</button><button class='tdelete'>Delete</button>"
+							}
+							]
+
+
+						});
+						// Now initialize click event for edit and delete
+						$scope.initEvent();
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		};
+
+		$scope.fetchAllsandw();
+
+	}]) // user master table control
+
+	.controller('sandwMasterFormCtrl',['$scope','sandwmasterservice','$stateParams','$state',function($scope,sandwmasterservice,$stateParams,$state){
+		console.log("sandwMasterFormCtrl");
+		$scope.sandwData = {};
+		if($stateParams.id == -1){
+			$scope.sandwOption = "Add";
+		}
+		else{
+			$scope.sandwOption = "Edit";
+			sandwmasterservice.fetchsandwByID($stateParams.id)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$state.go('admin.sandwmastertable');
+							});
+						}
+						else{
+							var data = JSON.parse(responseData.store);
+							console.log(data);
+							$scope.formdata = angular.copy(data);
+							setTimeout(function(){
+								$scope.$apply();
+							},300)
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		}
+
+		// Reset Function
+		$scope.reset  = function(userform)
+		{
+			if (userform) {
+				userform.$setPristine();
+				userform.$setUntouched();
+			}
+			$scope.formdata = angular.copy($scope.sandwData);
+		};
+
+		$scope.cancel = function(){
+			var msg = "Cancel";
+			var msgBody =  "Are you sure You want to cancel " +$scope.sandwOption + " process";
+			// call the master confirm dialog
+			$scope.masterConf(msg,msgBody,function(result){
+				console.log(result);
+				if(result){
+					$state.go('admin.sandwmastertable');
+				}else{
+					// you decided not to cancel the process
+				}
+			});
+		};
+
+		$scope.addsandw  = function(user,ev){
+			// add sandw
+			//call the add service
+			sandwmasterservice.addsandw(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Add successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.sandwmastertable');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+		// edit sandw
+		$scope.editsandw  = function(user,ev){
+			// edit role
+			//call the add service
+			sandwmasterservice.editsandw(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Edit successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.sandwmastertable');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+
+		/// submit function
+		$scope.save = function(role,ev){
+			$scope.sandwdata = angular.copy(role);
+			console.log($scope.sandwdata);
+			if($scope.sandwOption == "Add"){
+				$scope.addsandw($scope.sandwdata,ev);
+			}
+			else{
+				$scope.editsandw($scope.sandwdata,ev);
+			}
+		}
+
+	}]) // user master form control
