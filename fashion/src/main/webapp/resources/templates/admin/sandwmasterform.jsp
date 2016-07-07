@@ -11,24 +11,26 @@
 						  <!-- row 1 -->
 							 <div class="row">
 								<div class="col-md-6 col-xs-12 form-group">
-									<label for="userID">UserID</label>
-									<input type="text" class="form-control" name="userid" ng-model="formdata.userId"  ng-model-options="{ updateOn: 'blur' }"  placeholder="userid" required="">
+									<label for="name">Name</label>
+									<input type="text" class="form-control" name="name" ng-model="formdata.name"  ng-model-options="{ updateOn: 'blur' }"  placeholder="Store/Warehouse Name" required="">
 
 									<!-- error msg handling  -->
-									<div ng-show="userform.$submitted || userform.userid.$touched">
-									  <div class="alert alert-danger" ng-show="userform.userid.$error.required" role="alert">UserId is required </div>
-									  <div class="alert alert-danger" ng-show="userform.userid.$error.pattern" role="alert">UserID  is Invalid </div>
+									<div ng-show="userform.$submitted || userform.name.$touched">
+									  <div class="alert alert-danger" ng-show="userform.name.$error.required" role="alert">Name is required </div>
+									  <div class="alert alert-danger" ng-show="userform.name.$error.pattern" role="alert">Name  is Invalid </div>
 									</div>
 								   <!-- error msg handling  -->
 								</div>
 
 								<div class="col-md-6 col-xs-12 form-group">
-									<label for="userName">User Name</label>
-									<input type="text" class="form-control" name="userName" ng-model="formdata.userName"  ng-model-options="{ updateOn: 'blur' }" placeholder="username" required="">
-
+									<label for="Type">Type</label>
+									<select class="form-control" name="type" ng-model="formdata.type" ng-model-options="{ updateOn: 'blur' }" required="">
+										<option value="store">Store</option>
+										<option value="warehouse">WareHouse</option>
+									</select>
 								 <!-- error msg handling  -->
-									<div ng-show="userform.$submitted || userform.userName.$touched">
-									  <div class="alert alert-danger" ng-show="userform.userName.$error.required" role="alert">User name is required </div>
+									<div ng-show="userform.$submitted || userform.type.$touched">
+									  <div class="alert alert-danger" ng-show="userform.type.$error.required" role="alert">type is required </div>
 									</div>
 								   <!-- error msg handling  -->
 								</div>
@@ -38,61 +40,25 @@
 						  <!-- row 2 -->
 							 <div class="row">
 								<div class="col-md-6 col-xs-12 form-group">
-								   <label for="Password">Password</label>
-								   <input type="password" class="form-control" name="Password" ng-model="formdata.password"  ng-model-options="{ updateOn: 'blur' }" placeholder="Password" required="">
+								   <label for="flourCount">Flour Count</label>
+								   <input type="number" class="form-control" name="flourCount" ng-model="formdata.flourCount"  ng-model-options="{ updateOn: 'blur' }" placeholder="flour Count" required="">
 
 								  <!-- error msg handling  -->
 									<div ng-show="userform.$submitted || userform.Password.$touched">
-									  <div class="alert alert-danger" ng-show="userform.Password.$error.required" role="alert">Password  is required </div>
+									  <div class="alert alert-danger" ng-show="userform.flourCount.$error.required" role="alert">flour Count  is required </div>
 									</div>
 								   <!-- error msg handling  -->
 								</div>
 								<div class="col-md-6 col-xs-12 form-group">
-								   <label for="email">Email</label>
+								   <label for="Description">Description</label>
 								   <input type="email" class="form-control" name="email" ng-model="formdata.email"  ng-model-options="{ updateOn: 'blur' }" placeholder="Email" required="">
+									<textarea class="form-control" name="Description" ng-model="formdata.description" rows="5" ng-model-options="{ updateOn: 'blur' }" placeholder="Store/Warehouse Description" ></textarea>
 
-								   <!-- error msg handling  -->
-									<div ng-show="userform.$submitted || userform.email.$touched">
-									  <div class="alert alert-danger" ng-show="userform.email.$error.required" role="alert">Email is required </div>
-								   <div class="alert alert-danger" ng-show="userform.email.$error.email" role="alert">Email is invalid </div>
-									</div>
-								   <!-- error msg handling  -->
 								</div>
 							 </div>
 						  <!-- row 2 ends -->
 
-						  <!-- row 3 -->
-							 <div class="row">
-								<div class="col-md-6 col-xs-12 form-group">
-									<label for="phone">Phone</label>
-									<input type="tel" class="form-control" name="phone" ng-model="formdata.phone"  ng-model-options="{ updateOn: 'blur' }"  placeholder="Phone" required="">
 
-								<!-- error msg handling  -->
-									<div ng-show="userform.$submitted || userform.phone.$touched">
-									  <div class="alert alert-danger" ng-show="userform.phone.$error.required" role="alert">Phone is required </div>
-								   <div class="alert alert-danger" ng-show="userform.phone.$error.pattern" role="alert">Phone is invalid </div>
-									</div>
-								   <!-- error msg handling  -->
-
-								</div>
-								<div class="col-md-6 col-xs-12 form-group">
-								  <label for="role">User Role</label>
-								  <select class="form-control" name="role" ng-model="formdata.userRole" ng-model-options="{ updateOn: 'blur' }" required="">
-									  <option value="1">1</option>
-									  <option value="2">2</option>
-									  <option value="3">3</option>
-									  <option value="4">4</option>
-									  <option value="4">5</option>
-								  </select>
-
-								  <!-- error msg handling  -->
-									<div ng-show="userform.$submitted || userform.role.$touched">
-									  <div class="alert alert-danger" ng-show="userform.role.$error.required" role="alert">User Role is required </div>
-									</div>
-								   <!-- error msg handling  -->
-								</div>
-							 </div>
-						  <!-- row 3 ends -->
 				  </div>
 		</div>
 
@@ -104,87 +70,41 @@
 
 				<!-- row 1 -->
 				<div class="row">
-				<div class="col-md-6 col-xs-12 form-group">
-				<label for="userID">UserID</label>
-				<input type="text" class="form-control" name="userid" ng-model="formdata.userId"  ng-model-options="{ updateOn: 'blur' }"  placeholder="userid" required="">
+					<div class="col-md-6 col-xs-12 form-group">
+						<label for="Address Line 1">Address line 1 </label>
+						<input type="text" class="form-control" name="addressline1" ng-model="formdata.addess.addressline1"  ng-model-options="{ updateOn: 'blur' }"  placeholder="Address Line 1" >
+					</div>
 
-				<!-- error msg handling  -->
-				<div ng-show="userform.$submitted || userform.userid.$touched">
-				<div class="alert alert-danger" ng-show="userform.userid.$error.required" role="alert">UserId is required </div>
-				<div class="alert alert-danger" ng-show="userform.userid.$error.pattern" role="alert">UserID  is Invalid </div>
-				</div>
-				<!-- error msg handling  -->
-				</div>
-
-				<div class="col-md-6 col-xs-12 form-group">
-				<label for="userName">User Name</label>
-				<input type="text" class="form-control" name="userName" ng-model="formdata.userName"  ng-model-options="{ updateOn: 'blur' }" placeholder="username" required="">
-
-				<!-- error msg handling  -->
-				<div ng-show="userform.$submitted || userform.userName.$touched">
-				<div class="alert alert-danger" ng-show="userform.userName.$error.required" role="alert">User name is required </div>
-				</div>
-				<!-- error msg handling  -->
-				</div>
+					<div class="col-md-6 col-xs-12 form-group">
+						<label for="Address Line 2">User Name</label>
+						<input type="text" class="form-control" name="addressline2" ng-model="formdata.address.addressline2"  ng-model-options="{ updateOn: 'blur' }"  placeholder="Address Line 2" >
+					</div>
 				</div>
 				<!-- row 1 ends -->
 
 				<!-- row 2 -->
 				<div class="row">
-				<div class="col-md-6 col-xs-12 form-group">
-				<label for="Password">Password</label>
-				<input type="password" class="form-control" name="Password" ng-model="formdata.password"  ng-model-options="{ updateOn: 'blur' }" placeholder="Password" required="">
-
-				<!-- error msg handling  -->
-				<div ng-show="userform.$submitted || userform.Password.$touched">
-				<div class="alert alert-danger" ng-show="userform.Password.$error.required" role="alert">Password  is required </div>
-				</div>
-				<!-- error msg handling  -->
-				</div>
-				<div class="col-md-6 col-xs-12 form-group">
-				<label for="email">Email</label>
-				<input type="email" class="form-control" name="email" ng-model="formdata.email"  ng-model-options="{ updateOn: 'blur' }" placeholder="Email" required="">
-
-				<!-- error msg handling  -->
-				<div ng-show="userform.$submitted || userform.email.$touched">
-				<div class="alert alert-danger" ng-show="userform.email.$error.required" role="alert">Email is required </div>
-				<div class="alert alert-danger" ng-show="userform.email.$error.email" role="alert">Email is invalid </div>
-				</div>
-				<!-- error msg handling  -->
-				</div>
+					<div class="col-md-6 col-xs-12 form-group">
+						<label for="Street">Street</label>
+						<input type="text" class="form-control" name="Street" ng-model="formdata.address.street"  ng-model-options="{ updateOn: 'blur' }" placeholder="Street" >
+					</div>
+					<div class="col-md-6 col-xs-12 form-group">
+						<label for="City">City</label>
+						<input type="text" class="form-control" name="City" ng-model="formdata.address.City"  ng-model-options="{ updateOn: 'blur' }" placeholder="City">
+					</div>
 				</div>
 				<!-- row 2 ends -->
 
 				<!-- row 3 -->
 				<div class="row">
-				<div class="col-md-6 col-xs-12 form-group">
-				<label for="phone">Phone</label>
-				<input type="tel" class="form-control" name="phone" ng-model="formdata.phone"  ng-model-options="{ updateOn: 'blur' }"  placeholder="Phone" required="">
-
-				<!-- error msg handling  -->
-				<div ng-show="userform.$submitted || userform.phone.$touched">
-				<div class="alert alert-danger" ng-show="userform.phone.$error.required" role="alert">Phone is required </div>
-				<div class="alert alert-danger" ng-show="userform.phone.$error.pattern" role="alert">Phone is invalid </div>
-				</div>
-				<!-- error msg handling  -->
-
-				</div>
-				<div class="col-md-6 col-xs-12 form-group">
-				<label for="role">User Role</label>
-				<select class="form-control" name="role" ng-model="formdata.userRole" ng-model-options="{ updateOn: 'blur' }" required="">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="4">5</option>
-				</select>
-
-				<!-- error msg handling  -->
-				<div ng-show="userform.$submitted || userform.role.$touched">
-				<div class="alert alert-danger" ng-show="userform.role.$error.required" role="alert">User Role is required </div>
-				</div>
-				<!-- error msg handling  -->
-				</div>
+					<div class="col-md-6 col-xs-12 form-group">
+						<label for="State">State</label>
+						<input type="text" class="form-control" name="State" ng-model="formdata.address.state"  ng-model-options="{ updateOn: 'blur' }" placeholder="State" >
+					</div>
+					<div class="col-md-6 col-xs-12 form-group">
+						<label for="ZipCode">ZipCode</label>
+						<input type="tel" class="form-control" name="ZipCode" ng-model="formdata.address.ZipCode"  ng-model-options="{ updateOn: 'blur' }" placeholder="ZipCode">
+					</div>
 				</div>
 				<!-- row 3 ends -->
 

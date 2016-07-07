@@ -725,6 +725,8 @@ angular.module("fashion_controller",[ ])
 		$scope.addsandw  = function(user,ev){
 			// add sandw
 			//call the add service
+			console.log("add store form submit data");
+			  console.log(user);
 			sandwmasterservice.addsandw(user)
 				.then(
 					function(responseData){
