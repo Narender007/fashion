@@ -18,24 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.insync.fashion.model.Role;
-import com.insync.fashion.service.RoleService;
+import com.insync.fashion.model.StoreAndWarehouse;
+import com.insync.fashion.service.StoreAndWarehouseService;
 
 
 @RestController
-public class RoleController {
+public class StoreAndWarehouseController {
 	
-	public RoleController() {
+	public StoreAndWarehouseController() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Autowired
-	private RoleService  roleService;
+	private StoreAndWarehouseService  swService;
 	
 	// create a role
 	   @SuppressWarnings("unchecked")
-	   @RequestMapping(value = "/createRole/", method = RequestMethod.POST)
-	    public ResponseEntity<String> createRole(@RequestBody Role role,    HttpServletRequest httpRequest) {
+	   @RequestMapping(value = "/createStore/", method = RequestMethod.POST)
+	    public ResponseEntity<String> createStore(@RequestBody StoreAndWarehouse sw,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
 		   if(httpSession.getAttribute("userName") == null){
@@ -43,29 +43,29 @@ public class RoleController {
 			   obj.put("msg", "You session has expired please login again");
 		   }
 		   else{
-			   String checkResult = addRoleExist(role);
+			   String checkResult = addSWExist(sw);
 			   if(checkResult != "no"){
 				   obj.put("msgtype", "ERROR");
 				   obj.put("msg", checkResult);
 			   }
 			   else{
 				   // add missing parameters to role
-				   role.setStatus(1);
-				   role.setCreatedBy((String) httpSession.getAttribute("userName"));
-				   role.setCreatedDate(new java.util.Date());
-				    roleService.createRole(role);
+				   sw.setStatus(1);
+				   sw.setCreatedBy((String) httpSession.getAttribute("userName"));
+				   sw.setCreatedDate(new java.util.Date());
+				    swService.createStore(sw);
 				   obj.put("msgtype", "SUCCESS");
-				   obj.put("msg", "Role Created Successfully");
+				   obj.put("msg","New " + sw.getType() + " Created Successfully");
 			   }
 		   }
 	         String u = (String)   obj.toJSONString();
 	        return new ResponseEntity<String>(u,HttpStatus.OK);
 	    }
 	
-		// Update a Role ================
+		// Update a Store ================
     @SuppressWarnings("unchecked")
-	@RequestMapping(value = "/updateRole/", method = RequestMethod.POST)
-	    public ResponseEntity<String> updateRole(@RequestBody Role role,    HttpServletRequest httpRequest) {
+	@RequestMapping(value = "/updateStore/", method = RequestMethod.POST)
+	    public ResponseEntity<String> updateStore(@RequestBody StoreAndWarehouse sw,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
 		   if(httpSession.getAttribute("userName") == null){
@@ -73,19 +73,19 @@ public class RoleController {
 			   obj.put("msg", "You session has expired please login again");
 		   }
 		   else{
-			   String checkResult = editRoleExist(role);
+			   String checkResult = editSWExist(sw);
 			   if(checkResult != "no"){
 				   obj.put("msgtype", "ERROR");
 				   obj.put("msg", checkResult);
 			   }
 			   else{
 				   // add missing parameters to users
-				   role.setStatus(1);
-				   role.setModifiedBy((String) httpSession.getAttribute("userName"));
-				   role.setModifiedDate(new java.util.Date());
-				   roleService.updateRole(role);
+				   sw.setStatus(1);
+				   sw.setModifiedBy((String) httpSession.getAttribute("userName"));
+				   sw.setModifiedDate(new java.util.Date());
+				   swService.updateStore(sw);
 				   obj.put("msgtype", "SUCCESS");
-				   obj.put("msg", "Role Updated Successfully");
+				   obj.put("msg", sw.getType() + " Updated Successfully");
 			   }
 		   }
 	      String u = (String)   obj.toJSONString();
@@ -93,24 +93,24 @@ public class RoleController {
 	    }
 	   
 	   
-////-------------------Retrieve All Role--------------------------------------------------------
+////-------------------Retrieve All Store--------------------------------------------------------
 	      
-	    @RequestMapping(value = "/getAllRole/", method = RequestMethod.GET)
-	    public ResponseEntity<List<Role>> listAllRole() {
-	        List<Role> users = roleService.getAllRole();
+	    @RequestMapping(value = "/getAllStore/", method = RequestMethod.GET)
+	    public ResponseEntity<List<StoreAndWarehouse>> listAllStore() {
+	        List<StoreAndWarehouse> users = swService.getAllStore();
 	        if(users.isEmpty()){
-	            return new ResponseEntity<List<Role>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+	            return new ResponseEntity<List<StoreAndWarehouse>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
 	        }
-	        return new ResponseEntity<List<Role>>(users, HttpStatus.OK);
+	        return new ResponseEntity<List<StoreAndWarehouse>>(users, HttpStatus.OK);
 	    }
 	    
-//-------------------Retrieve Single User--------------------------------------------------------
+//-------------------Retrieve Single Store--------------------------------------------------------
 	      
 	    @SuppressWarnings("unchecked")
-		@RequestMapping(value = "/getRoleById/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public ResponseEntity<String> getRole(@PathVariable("id") long id, HttpServletRequest httpRequest) {
+		@RequestMapping(value = "/getStoreById/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity<String> getStore(@PathVariable("id") long id, HttpServletRequest httpRequest) {
 	    	JSONObject obj = new JSONObject();
-	        System.out.println("Fetching Role with id " + id);
+	        System.out.println("Fetching Store with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
 	        if(httpSession.getAttribute("userName") == null)
@@ -118,11 +118,11 @@ public class RoleController {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
-	        	Role role = roleService.getRole(id);
-	 	        if (role == null) {
-	 	            System.out.println("Role with id " + id + " not found");
+	        	StoreAndWarehouse sw = swService.getStore(id);
+	 	        if (sw == null) {
+	 	            System.out.println("Store with id " + id + " not found");
 	 	            obj.put("msgtype", "ERROR");
-	 				obj.put("msg", "No Role Found with Given ID");
+	 				obj.put("msg", "No Store or Warehouse Found with Given ID");
 	 	        }
 	 	        else{
 	 	        	obj.put("msgtype", "SUCCESS");
@@ -130,8 +130,8 @@ public class RoleController {
 	 				
 	 				ObjectMapper mapper = new ObjectMapper();
 	 				try {
-	 					String jsonInString = mapper.writeValueAsString(role);
-	 					obj.put("role", jsonInString);
+	 					String jsonInString = mapper.writeValueAsString(sw);
+	 					obj.put("store", jsonInString);
 	 				} catch (JsonProcessingException e) {
 	 					// TODO Auto-generated catch block
 	 					e.printStackTrace();
@@ -142,12 +142,12 @@ public class RoleController {
 	        return new ResponseEntity<String>(u, HttpStatus.OK);
 	    }	    
 	   
-	 // --------------------------Delete user-----------------------------------
+	 // --------------------------Delete Store-----------------------------------
 	    @SuppressWarnings("unchecked")
-		@RequestMapping(value = "/deleteRole/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public ResponseEntity<String> deleteRole(@PathVariable("id") long id, HttpServletRequest httpRequest) {
+		@RequestMapping(value = "/deleteStore/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity<String> deleteStore(@PathVariable("id") long id, HttpServletRequest httpRequest) {
 	    	JSONObject obj = new JSONObject();
-	        System.out.println("Deleting Role with id " + id);
+	        System.out.println("Deleting Store with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
 	        if(httpSession.getAttribute("userName") == null)
@@ -155,14 +155,14 @@ public class RoleController {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
-	        	Role role = roleService.getRole(id);
-	        	role.setStatus(2);
-	        	role.setModifiedBy((String) httpSession.getAttribute("userName"));
-	        	role.setModifiedDate(new java.util.Date());
+	        	StoreAndWarehouse sw = swService.getStore(id);
+	        	sw.setStatus(2);
+	        	sw.setModifiedBy((String) httpSession.getAttribute("userName"));
+	        	sw.setModifiedDate(new java.util.Date());
 	        	
-	        	roleService.updateRole(role);
+	        	swService.updateStore(sw);
 	        	obj.put("msgtype", "SUCCESS");
-				obj.put("msg", "Role Successfully Deleted");
+				obj.put("msg", sw.getType() + " Successfully Deleted");
 	        }
 	        String u = (String) obj.toJSONString();
 	        return new ResponseEntity<String>(u, HttpStatus.OK);
@@ -172,11 +172,11 @@ public class RoleController {
 	    
 	   
 	   // extra functions ===================-----------------------------------------
-	    private String addRoleExist(Role role){
+	    private String addSWExist(StoreAndWarehouse sw){
 	    	String result = "no";
-	    	   if(roleService.isnameConflict(role))
+	    	   if(swService.isnameConflict(sw))
 	    	   {
-	    		   System.out.println("A role with name " + role.getRoleName() + " already exist"); 
+	    		   System.out.println("A "+sw.getType() +"  with name " + sw.getName() + " already exist"); 
 	    		   return "NAME CONFLICT";
 	    	   }
 	    	   
@@ -184,12 +184,12 @@ public class RoleController {
 	    	return result;
 	    }
 	    
-	    private String editRoleExist(Role role){
+	    private String editSWExist(StoreAndWarehouse sw){
 	    	String result = "no";
 	    	   
-	    	   if(roleService.editnameConflict(role))
+	    	   if(swService.editnameConflict(sw))
 	    	   {
-	    		   System.out.println("A Role with user name " + role.getRoleName() + " already exist"); 
+	    		   System.out.println("A "+sw.getType() +"  with name " + sw.getName() + " already exist"); 
 	    		   return "NAME CONFLICT";
 	    	   }
 	    	   
