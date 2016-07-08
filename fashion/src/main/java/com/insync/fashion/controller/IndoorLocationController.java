@@ -1,6 +1,5 @@
 package com.insync.fashion.controller;
 
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,24 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.insync.fashion.model.StoreAndWarehouse;
-import com.insync.fashion.service.StoreAndWarehouseService;
+import com.insync.fashion.model.IndoorLocation;
+import com.insync.fashion.service.IndoorLocationService;
 
 
 @RestController
-public class StoreAndWarehouseController {
+public class IndoorLocationController {
 	
-	public StoreAndWarehouseController() {
+	public IndoorLocationController() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Autowired
-	private StoreAndWarehouseService  swService;
+	private IndoorLocationService  indoorService;
 	
 	// create a role
 	   @SuppressWarnings("unchecked")
-	   @RequestMapping(value = "/createStore/", method = RequestMethod.POST)
-	    public ResponseEntity<String> createStore(@RequestBody StoreAndWarehouse sw,    HttpServletRequest httpRequest) {
+	   @RequestMapping(value = "/createLocation/", method = RequestMethod.POST)
+	    public ResponseEntity<String> createLocation(@RequestBody IndoorLocation il,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
 		   if(httpSession.getAttribute("userName") == null){
@@ -44,29 +43,29 @@ public class StoreAndWarehouseController {
 			   obj.put("msg", "You session has expired please login again");
 		   }
 		   else{
-			   String checkResult = addSWExist(sw);
+			   String checkResult = addILExist(il);
 			   if(checkResult != "no"){
 				   obj.put("msgtype", "ERROR");
 				   obj.put("msg", checkResult);
 			   }
 			   else{
 				   // add missing parameters to role
-				   sw.setStatus(1);
-				   sw.setCreatedBy((String) httpSession.getAttribute("userName"));
-				   sw.setCreatedDate(new java.util.Date());
-				    swService.createStore(sw);
+				   il.setStatus(1);
+				   il.setCreatedBy((String) httpSession.getAttribute("userName"));
+				   il.setCreatedDate(new java.util.Date());
+				    indoorService.createIndoorLocation(il);
 				   obj.put("msgtype", "SUCCESS");
-				   obj.put("msg","New " + sw.getType() + " Created Successfully");
+				   obj.put("msg", "Indoor Location Created Successfully");
 			   }
 		   }
 	         String u = (String)   obj.toJSONString();
 	        return new ResponseEntity<String>(u,HttpStatus.OK);
 	    }
 	
-		// Update a Store ================
+		// Update a Role ================
     @SuppressWarnings("unchecked")
-	@RequestMapping(value = "/updateStore/", method = RequestMethod.POST)
-	    public ResponseEntity<String> updateStore(@RequestBody StoreAndWarehouse sw,    HttpServletRequest httpRequest) {
+	@RequestMapping(value = "/updateLocation/", method = RequestMethod.POST)
+	    public ResponseEntity<String> updateLocation(@RequestBody IndoorLocation il,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
 		   if(httpSession.getAttribute("userName") == null){
@@ -74,19 +73,19 @@ public class StoreAndWarehouseController {
 			   obj.put("msg", "You session has expired please login again");
 		   }
 		   else{
-			   String checkResult = editSWExist(sw);
+			   String checkResult = editILExist(il);
 			   if(checkResult != "no"){
 				   obj.put("msgtype", "ERROR");
 				   obj.put("msg", checkResult);
 			   }
 			   else{
 				   // add missing parameters to users
-				   sw.setStatus(1);
-				   sw.setModifiedBy((String) httpSession.getAttribute("userName"));
-				   sw.setModifiedDate(new java.util.Date());
-				   swService.updateStore(sw);
+				   il.setStatus(1);
+				   il.setModifiedBy((String) httpSession.getAttribute("userName"));
+				   il.setModifiedDate(new java.util.Date());
+				   indoorService.updateIndoorLocation(il);
 				   obj.put("msgtype", "SUCCESS");
-				   obj.put("msg", sw.getType() + " Updated Successfully");
+				   obj.put("msg", "Indoor Location Updated Successfully");
 			   }
 		   }
 	      String u = (String)   obj.toJSONString();
@@ -94,24 +93,24 @@ public class StoreAndWarehouseController {
 	    }
 	   
 	   
-////-------------------Retrieve All Store--------------------------------------------------------
+////-------------------Retrieve All Role--------------------------------------------------------
 	      
-	    @RequestMapping(value = "/getAllStore/", method = RequestMethod.GET)
-	    public ResponseEntity<List<StoreAndWarehouse>> listAllStore() {
-	        List<StoreAndWarehouse> users = swService.getAllStore();
+	    @RequestMapping(value = "/getAllLocation/", method = RequestMethod.GET)
+	    public ResponseEntity<List<IndoorLocation>> listAllLocation() {
+	        List<IndoorLocation> users = indoorService.getAllIndoorLocation();
 	        if(users.isEmpty()){
-	            return new ResponseEntity<List<StoreAndWarehouse>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+	            return new ResponseEntity<List<IndoorLocation>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
 	        }
-	        return new ResponseEntity<List<StoreAndWarehouse>>(users, HttpStatus.OK);
+	        return new ResponseEntity<List<IndoorLocation>>(users, HttpStatus.OK);
 	    }
 	    
-//-------------------Retrieve Single Store--------------------------------------------------------
+//-------------------Retrieve Single User--------------------------------------------------------
 	      
 	    @SuppressWarnings("unchecked")
-		@RequestMapping(value = "/getStoreById/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public ResponseEntity<String> getStore(@PathVariable("id") long id, HttpServletRequest httpRequest) {
+		@RequestMapping(value = "/getlocationById/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity<String> getLocation(@PathVariable("id") long id, HttpServletRequest httpRequest) {
 	    	JSONObject obj = new JSONObject();
-	        System.out.println("Fetching Store with id " + id);
+	        System.out.println("Fetching Role with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
 	        if(httpSession.getAttribute("userName") == null)
@@ -119,11 +118,11 @@ public class StoreAndWarehouseController {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
-	        	StoreAndWarehouse sw = swService.getStore(id);
-	 	        if (sw == null) {
-	 	            System.out.println("Store with id " + id + " not found");
+	        	IndoorLocation il = indoorService.getIndoorLocation(id);
+	 	        if (il == null) {
+	 	            System.out.println("Location with id " + id + " not found");
 	 	            obj.put("msgtype", "ERROR");
-	 				obj.put("msg", "No Store or Warehouse Found with Given ID");
+	 				obj.put("msg", "No Indoor Location Found with Given ID");
 	 	        }
 	 	        else{
 	 	        	obj.put("msgtype", "SUCCESS");
@@ -131,8 +130,8 @@ public class StoreAndWarehouseController {
 	 				
 	 				ObjectMapper mapper = new ObjectMapper();
 	 				try {
-	 					String jsonInString = mapper.writeValueAsString(sw);
-	 					obj.put("store", jsonInString);
+	 					String jsonInString = mapper.writeValueAsString(il);
+	 					obj.put("location", jsonInString);
 	 				} catch (JsonProcessingException e) {
 	 					// TODO Auto-generated catch block
 	 					e.printStackTrace();
@@ -143,12 +142,12 @@ public class StoreAndWarehouseController {
 	        return new ResponseEntity<String>(u, HttpStatus.OK);
 	    }	    
 	   
-	 // --------------------------Delete Store-----------------------------------
+	 // --------------------------Delete user-----------------------------------
 	    @SuppressWarnings("unchecked")
-		@RequestMapping(value = "/deleteStore/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public ResponseEntity<String> deleteStore(@PathVariable("id") long id, HttpServletRequest httpRequest) {
+		@RequestMapping(value = "/deleteLocation/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity<String> deleteLocation(@PathVariable("id") long id, HttpServletRequest httpRequest) {
 	    	JSONObject obj = new JSONObject();
-	        System.out.println("Deleting Store with id " + id);
+	        System.out.println("Deleting Location with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
 	        if(httpSession.getAttribute("userName") == null)
@@ -156,14 +155,14 @@ public class StoreAndWarehouseController {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
-	        	StoreAndWarehouse sw = swService.getStore(id);
-	        	sw.setStatus(2);
-	        	sw.setModifiedBy((String) httpSession.getAttribute("userName"));
-	        	sw.setModifiedDate(new java.util.Date());
+	        	IndoorLocation indoorLocation = indoorService.getIndoorLocation(id);
+	        	indoorLocation.setStatus(2);
+	        	indoorLocation.setModifiedBy((String) httpSession.getAttribute("userName"));
+	        	indoorLocation.setModifiedDate(new java.util.Date());
 	        	
-	        	swService.updateStore(sw);
+	        	indoorService.updateIndoorLocation(indoorLocation);
 	        	obj.put("msgtype", "SUCCESS");
-				obj.put("msg", sw.getType() + " Successfully Deleted");
+				obj.put("msg", "Indoor Location Successfully Deleted");
 	        }
 	        String u = (String) obj.toJSONString();
 	        return new ResponseEntity<String>(u, HttpStatus.OK);
@@ -173,11 +172,11 @@ public class StoreAndWarehouseController {
 	    
 	   
 	   // extra functions ===================-----------------------------------------
-	    private String addSWExist(StoreAndWarehouse sw){
+	    private String addILExist(IndoorLocation location){
 	    	String result = "no";
-	    	   if(swService.isnameConflict(sw))
+	    	   if(indoorService.isnameConflict(location))
 	    	   {
-	    		   System.out.println("A "+sw.getType() +"  with name " + sw.getName() + " already exist"); 
+	    		   System.out.println("A Location with  name " + location.getName() + " already exist in same Store/Warehouse"); 
 	    		   return "NAME CONFLICT";
 	    	   }
 	    	   
@@ -185,12 +184,12 @@ public class StoreAndWarehouseController {
 	    	return result;
 	    }
 	    
-	    private String editSWExist(StoreAndWarehouse sw){
+	    private String editILExist(IndoorLocation location){
 	    	String result = "no";
 	    	   
-	    	   if(swService.editnameConflict(sw))
+	    	   if(indoorService.editnameConflict(location))
 	    	   {
-	    		   System.out.println("A "+sw.getType() +"  with name " + sw.getName() + " already exist"); 
+	    		   System.out.println("A Location with  name " + location.getName() + " already exist in same Store/Warehouse"); 
 	    		   return "NAME CONFLICT";
 	    	   }
 	    	   

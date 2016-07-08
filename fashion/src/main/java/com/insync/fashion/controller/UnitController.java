@@ -1,6 +1,5 @@
 package com.insync.fashion.controller;
 
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,24 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.insync.fashion.model.StoreAndWarehouse;
-import com.insync.fashion.service.StoreAndWarehouseService;
+import com.insync.fashion.model.Unit;
+import com.insync.fashion.service.UnitService;
 
 
 @RestController
-public class StoreAndWarehouseController {
+public class UnitController {
 	
-	public StoreAndWarehouseController() {
+	public UnitController() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Autowired
-	private StoreAndWarehouseService  swService;
+	private UnitService  unitService;
 	
-	// create a role
+	// create a unit
 	   @SuppressWarnings("unchecked")
-	   @RequestMapping(value = "/createStore/", method = RequestMethod.POST)
-	    public ResponseEntity<String> createStore(@RequestBody StoreAndWarehouse sw,    HttpServletRequest httpRequest) {
+	   @RequestMapping(value = "/createUnit/", method = RequestMethod.POST)
+	    public ResponseEntity<String> createUnit(@RequestBody Unit unit,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
 		   if(httpSession.getAttribute("userName") == null){
@@ -44,29 +43,29 @@ public class StoreAndWarehouseController {
 			   obj.put("msg", "You session has expired please login again");
 		   }
 		   else{
-			   String checkResult = addSWExist(sw);
+			   String checkResult = addUnitExist(unit);
 			   if(checkResult != "no"){
 				   obj.put("msgtype", "ERROR");
 				   obj.put("msg", checkResult);
 			   }
 			   else{
-				   // add missing parameters to role
-				   sw.setStatus(1);
-				   sw.setCreatedBy((String) httpSession.getAttribute("userName"));
-				   sw.setCreatedDate(new java.util.Date());
-				    swService.createStore(sw);
+				   // add missing parameters to unit
+				   unit.setStatus(1);
+				   unit.setCreatedBy((String) httpSession.getAttribute("userName"));
+				   unit.setCreatedDate(new java.util.Date());
+				    unitService.createUnit(unit);
 				   obj.put("msgtype", "SUCCESS");
-				   obj.put("msg","New " + sw.getType() + " Created Successfully");
+				   obj.put("msg", "Unit Created Successfully");
 			   }
 		   }
 	         String u = (String)   obj.toJSONString();
 	        return new ResponseEntity<String>(u,HttpStatus.OK);
 	    }
 	
-		// Update a Store ================
+		// Update a Unit ================
     @SuppressWarnings("unchecked")
-	@RequestMapping(value = "/updateStore/", method = RequestMethod.POST)
-	    public ResponseEntity<String> updateStore(@RequestBody StoreAndWarehouse sw,    HttpServletRequest httpRequest) {
+	@RequestMapping(value = "/updateUnit/", method = RequestMethod.POST)
+	    public ResponseEntity<String> updateUnit(@RequestBody Unit unit,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
 		   if(httpSession.getAttribute("userName") == null){
@@ -74,19 +73,19 @@ public class StoreAndWarehouseController {
 			   obj.put("msg", "You session has expired please login again");
 		   }
 		   else{
-			   String checkResult = editSWExist(sw);
+			   String checkResult = editUnitExist(unit);
 			   if(checkResult != "no"){
 				   obj.put("msgtype", "ERROR");
 				   obj.put("msg", checkResult);
 			   }
 			   else{
 				   // add missing parameters to users
-				   sw.setStatus(1);
-				   sw.setModifiedBy((String) httpSession.getAttribute("userName"));
-				   sw.setModifiedDate(new java.util.Date());
-				   swService.updateStore(sw);
+				   unit.setStatus(1);
+				   unit.setModifiedBy((String) httpSession.getAttribute("userName"));
+				   unit.setModifiedDate(new java.util.Date());
+				   unitService.updateUnit(unit);
 				   obj.put("msgtype", "SUCCESS");
-				   obj.put("msg", sw.getType() + " Updated Successfully");
+				   obj.put("msg", "Unit Updated Successfully");
 			   }
 		   }
 	      String u = (String)   obj.toJSONString();
@@ -94,24 +93,24 @@ public class StoreAndWarehouseController {
 	    }
 	   
 	   
-////-------------------Retrieve All Store--------------------------------------------------------
+////-------------------Retrieve All Unit--------------------------------------------------------
 	      
-	    @RequestMapping(value = "/getAllStore/", method = RequestMethod.GET)
-	    public ResponseEntity<List<StoreAndWarehouse>> listAllStore() {
-	        List<StoreAndWarehouse> users = swService.getAllStore();
+	    @RequestMapping(value = "/getAllUnit/", method = RequestMethod.GET)
+	    public ResponseEntity<List<Unit>> listAllUnit() {
+	        List<Unit> users = unitService.getAllUnit();
 	        if(users.isEmpty()){
-	            return new ResponseEntity<List<StoreAndWarehouse>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+	            return new ResponseEntity<List<Unit>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
 	        }
-	        return new ResponseEntity<List<StoreAndWarehouse>>(users, HttpStatus.OK);
+	        return new ResponseEntity<List<Unit>>(users, HttpStatus.OK);
 	    }
 	    
-//-------------------Retrieve Single Store--------------------------------------------------------
+//-------------------Retrieve Single Unit--------------------------------------------------------
 	      
 	    @SuppressWarnings("unchecked")
-		@RequestMapping(value = "/getStoreById/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public ResponseEntity<String> getStore(@PathVariable("id") long id, HttpServletRequest httpRequest) {
+		@RequestMapping(value = "/getUnitById/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity<String> getUnit(@PathVariable("id") long id, HttpServletRequest httpRequest) {
 	    	JSONObject obj = new JSONObject();
-	        System.out.println("Fetching Store with id " + id);
+	        System.out.println("Fetching Unit with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
 	        if(httpSession.getAttribute("userName") == null)
@@ -119,11 +118,11 @@ public class StoreAndWarehouseController {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
-	        	StoreAndWarehouse sw = swService.getStore(id);
-	 	        if (sw == null) {
-	 	            System.out.println("Store with id " + id + " not found");
+	        	Unit unit = unitService.getUnit(id);
+	 	        if (unit == null) {
+	 	            System.out.println("Unit with id " + id + " not found");
 	 	            obj.put("msgtype", "ERROR");
-	 				obj.put("msg", "No Store or Warehouse Found with Given ID");
+	 				obj.put("msg", "No Unit Found with Given ID");
 	 	        }
 	 	        else{
 	 	        	obj.put("msgtype", "SUCCESS");
@@ -131,8 +130,8 @@ public class StoreAndWarehouseController {
 	 				
 	 				ObjectMapper mapper = new ObjectMapper();
 	 				try {
-	 					String jsonInString = mapper.writeValueAsString(sw);
-	 					obj.put("store", jsonInString);
+	 					String jsonInString = mapper.writeValueAsString(unit);
+	 					obj.put("unit", jsonInString);
 	 				} catch (JsonProcessingException e) {
 	 					// TODO Auto-generated catch block
 	 					e.printStackTrace();
@@ -143,12 +142,12 @@ public class StoreAndWarehouseController {
 	        return new ResponseEntity<String>(u, HttpStatus.OK);
 	    }	    
 	   
-	 // --------------------------Delete Store-----------------------------------
+	 // --------------------------Delete user-----------------------------------
 	    @SuppressWarnings("unchecked")
-		@RequestMapping(value = "/deleteStore/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public ResponseEntity<String> deleteStore(@PathVariable("id") long id, HttpServletRequest httpRequest) {
+		@RequestMapping(value = "/deleteUnit/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity<String> deleteUnit(@PathVariable("id") long id, HttpServletRequest httpRequest) {
 	    	JSONObject obj = new JSONObject();
-	        System.out.println("Deleting Store with id " + id);
+	        System.out.println("Deleting Unit with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
 	        if(httpSession.getAttribute("userName") == null)
@@ -156,14 +155,14 @@ public class StoreAndWarehouseController {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
-	        	StoreAndWarehouse sw = swService.getStore(id);
-	        	sw.setStatus(2);
-	        	sw.setModifiedBy((String) httpSession.getAttribute("userName"));
-	        	sw.setModifiedDate(new java.util.Date());
+	        	Unit unit = unitService.getUnit(id);
+	        	unit.setStatus(2);
+	        	unit.setModifiedBy((String) httpSession.getAttribute("userName"));
+	        	unit.setModifiedDate(new java.util.Date());
 	        	
-	        	swService.updateStore(sw);
+	        	unitService.updateUnit(unit);
 	        	obj.put("msgtype", "SUCCESS");
-				obj.put("msg", sw.getType() + " Successfully Deleted");
+				obj.put("msg", "Unit Successfully Deleted");
 	        }
 	        String u = (String) obj.toJSONString();
 	        return new ResponseEntity<String>(u, HttpStatus.OK);
@@ -173,11 +172,11 @@ public class StoreAndWarehouseController {
 	    
 	   
 	   // extra functions ===================-----------------------------------------
-	    private String addSWExist(StoreAndWarehouse sw){
+	    private String addUnitExist(Unit unit){
 	    	String result = "no";
-	    	   if(swService.isnameConflict(sw))
+	    	   if(unitService.isnameConflict(unit))
 	    	   {
-	    		   System.out.println("A "+sw.getType() +"  with name " + sw.getName() + " already exist"); 
+	    		   System.out.println("A unit with name " + unit.getName() + " already exist"); 
 	    		   return "NAME CONFLICT";
 	    	   }
 	    	   
@@ -185,12 +184,12 @@ public class StoreAndWarehouseController {
 	    	return result;
 	    }
 	    
-	    private String editSWExist(StoreAndWarehouse sw){
+	    private String editUnitExist(Unit unit){
 	    	String result = "no";
 	    	   
-	    	   if(swService.editnameConflict(sw))
+	    	   if(unitService.editnameConflict(unit))
 	    	   {
-	    		   System.out.println("A "+sw.getType() +"  with name " + sw.getName() + " already exist"); 
+	    		   System.out.println("A Unit with user name " + unit.getName() + " already exist"); 
 	    		   return "NAME CONFLICT";
 	    	   }
 	    	   
