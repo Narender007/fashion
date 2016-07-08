@@ -24,6 +24,7 @@ public class Product implements Serializable {
 	    private int productType;
 	    private int productBran;
 	    private int barcode;
+	    private String imgUrl;
 	    
 	    private int status;
 	    private String createdBy;
@@ -98,5 +99,13 @@ public class Product implements Serializable {
 		public void setModifiedDate(java.util.Date modifiedDate) {
 			this.modifiedDate = modifiedDate;
 		}
+		public String getImgUrl() {
+			return imgUrl;
+		}
+		public void setImgUrl(String imgUrl) {
+			this.imgUrl = imgUrl;
+		}
+		
+		
 	    
 }
