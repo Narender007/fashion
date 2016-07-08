@@ -51,8 +51,7 @@
 								</div>
 								<div class="col-md-6 col-xs-12 form-group">
 								   <label for="Description">Description</label>
-								   <input type="email" class="form-control" name="email" ng-model="formdata.email"  ng-model-options="{ updateOn: 'blur' }" placeholder="Email" required="">
-									<textarea class="form-control" name="Description" ng-model="formdata.description" rows="5" ng-model-options="{ updateOn: 'blur' }" placeholder="Store/Warehouse Description" ></textarea>
+								   <textarea class="form-control" name="Description" ng-model="formdata.description" rows="5" ng-model-options="{ updateOn: 'blur' }" placeholder="Store/Warehouse Description" ></textarea>
 
 								</div>
 							 </div>
@@ -64,7 +63,7 @@
 
 		<div class="panel panel-default md-whiteframe-12dp formPanel">
 	         <div class="panel-heading">
-				{{sandwOption}} Store
+				Address Detail
 	          </div>
 	          <div class="panel-body">
 
@@ -72,11 +71,11 @@
 				<div class="row">
 					<div class="col-md-6 col-xs-12 form-group">
 						<label for="Address Line 1">Address line 1 </label>
-						<input type="text" class="form-control" name="addressline1" ng-model="formdata.addess.addressline1"  ng-model-options="{ updateOn: 'blur' }"  placeholder="Address Line 1" >
+						<input type="text" class="form-control" name="addressline1" ng-model="formdata.address.addressline1"  ng-model-options="{ updateOn: 'blur' }"  placeholder="Address Line 1" >
 					</div>
 
 					<div class="col-md-6 col-xs-12 form-group">
-						<label for="Address Line 2">User Name</label>
+						<label for="Address Line 2">Address Line 2</label>
 						<input type="text" class="form-control" name="addressline2" ng-model="formdata.address.addressline2"  ng-model-options="{ updateOn: 'blur' }"  placeholder="Address Line 2" >
 					</div>
 				</div>
@@ -90,7 +89,7 @@
 					</div>
 					<div class="col-md-6 col-xs-12 form-group">
 						<label for="City">City</label>
-						<input type="text" class="form-control" name="City" ng-model="formdata.address.City"  ng-model-options="{ updateOn: 'blur' }" placeholder="City">
+						<input type="text" class="form-control" name="City" ng-model="formdata.address.city"  ng-model-options="{ updateOn: 'blur' }" placeholder="City">
 					</div>
 				</div>
 				<!-- row 2 ends -->
@@ -98,12 +97,12 @@
 				<!-- row 3 -->
 				<div class="row">
 					<div class="col-md-6 col-xs-12 form-group">
-						<label for="State">State</label>
+						<label for="State">Country</label>
 						<input type="text" class="form-control" name="State" ng-model="formdata.address.state"  ng-model-options="{ updateOn: 'blur' }" placeholder="State" >
 					</div>
 					<div class="col-md-6 col-xs-12 form-group">
 						<label for="ZipCode">ZipCode</label>
-						<input type="tel" class="form-control" name="ZipCode" ng-model="formdata.address.ZipCode"  ng-model-options="{ updateOn: 'blur' }" placeholder="ZipCode">
+						<input type="tel" class="form-control" name="ZipCode" ng-model="formdata.address.zipcode"  ng-model-options="{ updateOn: 'blur' }" placeholder="ZipCode">
 					</div>
 				</div>
 				<!-- row 3 ends -->

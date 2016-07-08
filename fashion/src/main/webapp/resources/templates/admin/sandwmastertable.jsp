@@ -14,8 +14,11 @@
 		     <table id="userTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
 		        <thead>
 		            <tr>
-		                <th>Id</th>
 						<th>Name</th>
+						<th>Type</th>
+						<th>Floor Count</th>
+						<th>Address</th>
+						<th>City</th>
 		                <th>Action</th>
 		             </tr>
 		        </thead>

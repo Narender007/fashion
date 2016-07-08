@@ -35,6 +35,16 @@
 		          </ul>
 		        </li>
 		        
+		        <!-- Location dropdown -->
+		         <li class="dropdown">
+		          <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Location <span class="caret"></span></a>
+		          <ul class="dropdown-menu">
+		            <li><a ui-sref="admin.sandwmastertable">Store/Warehouse</a></li>
+		            <li><a ui-sref="admin.rolemastertable">Indoor  Location</a></li>
+		          </ul>
+		        </li>
+		        <!-- Location dwopdown ends -->
+		        
 		        <!-- user dropdown -->
 		         <li class="dropdown">
 		          <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>

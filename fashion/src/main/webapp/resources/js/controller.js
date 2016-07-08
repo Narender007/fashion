@@ -576,7 +576,7 @@ angular.module("fashion_controller",[ ])
 				var data = $scope.userTable.row( $(this).parents('tr') ).data();
 				// call master confirm
 				var msg = "Delete Information";
-				var msgBody = "Are You Sure you want to delete  " + data.type  + " " +data.roleName;
+				var msgBody = "Are You Sure you want to delete  " + data.type  + " " +data.name;
 				$scope.masterConf(msg,msgBody,function(result){
 					if(result){
 						$scope.deletesandw(data.id);
@@ -640,8 +640,11 @@ angular.module("fashion_controller",[ ])
 							"data":   responseData ,
 							"destroy": true,
 							"columns": [
-								{ "data": "id" },
-								{ "data": "Name" },
+								{ "data": "name" },
+								{ "data": "type" },
+								{ "data": "flourCount" },
+								{ "data": "address.addressline1" },
+								{ "data": "address.city" },
 								{ "data": null }
 							],
 							"columnDefs": [ {
