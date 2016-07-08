@@ -226,6 +226,75 @@ angular.module("fashion_services",[ ])
 	}])
 
 // store and warehouse service ends
+// indoor location service
 
+	.service('indoormasterservice',['$http','$q', function($http,$q){
+		return{
+			fetchalllocation: function(){
+				return $http.get(path + '/getAllLocation/')
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while fetching Location');
+							return $q.reject(errResponse);
+						});
+			},   // getAllLocation
 
+			addlocation: function(data){
+				return $http.post(path + '/createLocation/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while creating location');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			fetchlocationByID: function (data) {
+				return $http.get(path + '/getlocationById/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Geting location by id');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // fetchlocationByID
+
+			editlocation: function(data){
+				return $http.post(path + '/updateLocation/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while updating location');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+			deletelocation: function (data) {
+				return $http.get(path + '/deleteLocation/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Deleting  location');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // Deletelocation
+
+		}// outer return end
+	}])
+
+// indoor location service ends
 

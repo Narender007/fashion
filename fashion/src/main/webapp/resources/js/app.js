@@ -70,7 +70,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			  controller:"sandwMasterFormCtrl"
 		  })
 
+// state difinition for indoorLocation templates
+          .state('admin.indoormastertable',{
+              url:"/indoorMaster",
+              templateUrl:"resources/templates/admin/indoormastertable.jsp",
+              controller:"indoorMasterTableCtrl"
+          })
 
+          .state('admin.indoorAddEdit',{
+              url:"/indoorForm/:id",
+              templateUrl:"resources/templates/admin/indoormasterform.jsp",
+              controller:"indoorMasterFormCtrl"
+          })
 
 
 

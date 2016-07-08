@@ -562,10 +562,9 @@ angular.module("fashion_controller",[ ])
             }
         }
 
-    }]) // user master form control
+    }]) // role master form control
 
   // store and warehouse controllers
-
 
 	.controller('sandwMasterTableCtrl',['$scope','sandwmasterservice','$state',function($scope,sandwmasterservice,$state){
 		console.log('sandwMasterTableCtrl');
@@ -789,4 +788,226 @@ angular.module("fashion_controller",[ ])
 			}
 		}
 
-	}]) // user master form control
+	}]) // store and warehouse master form control
+
+// Indoor controllers
+
+	.controller('indoorMasterTableCtrl',['$scope','indoormasterservice','$state',function($scope,indoormasterservice,$state){
+		console.log('indoorMasterTableCtrl');
+
+		$scope.initEvent = function(){
+			$('#userTable tbody').on( 'click', '.tdelete', function () {
+				console.log("delete called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				// call master confirm
+				var msg = "Delete Indoor Location";
+				var msgBody = "Are You Sure you want to delete Indoor Location " + data.name;
+				$scope.masterConf(msg,msgBody,function(result){
+					if(result){
+						$scope.deleteLocation(data.id);
+					}else{
+						// you decided not to delete
+					}
+				});
+
+			});
+
+			$('#userTable tbody').on( 'click', '.tedit', function () {
+				console.log("edit called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				$scope.editLocation(data.id);
+			});
+		}
+
+		// function for edit
+		$scope.editLocation = function(userid){
+			// go to add or edit screen
+			var param = {};
+			param.id = userid;
+			$state.go('admin.indoorAddEdit',param);
+		}
+
+		$scope.deleteLocation = function(id){
+			console.log(id);
+			indoormasterservice.deletelocation(id)
+				.then(function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterAlert(responseData.msgtype,responseData.msg,null);
+						}
+						else{
+							console.log("Deleted successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$scope.fetchAllLocation();
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					});
+
+		}
+
+
+
+		$scope.userTable = null;
+		$scope.fetchAllLocation = function(){
+			if($scope.userTable != null)
+			{
+				$scope.userTable.destroy();
+			}
+			// call service methord
+			indoormasterservice.fetchalllocation()
+				.then(
+					function(responseData){
+						console.log(responseData);
+						$scope.userTable = $('#userTable').DataTable( {
+							"data":   responseData ,
+							"destroy": true,
+							"columns": [
+								{ "data": "id" },
+								{ "data": "name" },
+								{ "data": null }
+							],
+							"columnDefs": [ {
+								"targets": -1,
+								"data": null,
+								"defaultContent": "<button class='tedit'>Edit</button><button class='tdelete'>Delete</button>"
+							}
+							]
+
+
+						});
+						// Now initialize click event for edit and delete
+						$scope.initEvent();
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		};
+
+		$scope.fetchAllLocation();
+
+	}]) // user master table control
+
+	.controller('indoorMasterFormCtrl',['$scope','indoormasterservice','$stateParams','$state',function($scope,indoormasterservice,$stateParams,$state){
+		console.log("indoorMasterFormCtrl");
+		$scope.locationData = {};
+		if($stateParams.id == -1){
+			$scope.locationOption = "Add";
+		}
+		else{
+			$scope.locationOption = "Edit";
+			indoormasterservice.fetchlocationByID($stateParams.id)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$state.go('admin.indoormastertable');
+							});
+						}
+						else{
+							var data = JSON.parse(responseData.location);
+							console.log(data);
+							$scope.formdata = angular.copy(data);
+							setTimeout(function(){
+								$scope.$apply();
+							},300)
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		}
+
+		// Reset Function
+		$scope.reset  = function(userform)
+		{
+			if (userform) {
+				userform.$setPristine();
+				userform.$setUntouched();
+			}
+			$scope.formdata = angular.copy($scope.locationData);
+		};
+
+		$scope.cancel = function(){
+			var msg = "Cancel";
+			var msgBody =  "Are you sure You want to cancel " +$scope.locationOption + " process";
+			// call the master confirm dialog
+			$scope.masterConf(msg,msgBody,function(result){
+				console.log(result);
+				if(result){
+					$state.go('admin.indoormastertable');
+				}else{
+					// you decided not to cancel the process
+				}
+			});
+		};
+
+		$scope.addLocation  = function(user,ev){
+			// add user
+			//call the add service
+			indoormasterservice.addlocation(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Add successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.indoormastertable');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+		// edit user
+		$scope.editLocation  = function(user,ev){
+			// edit role
+			//call the add service
+			indoormasterservice.editlocation(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Edit successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.indoormastertable');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+
+		/// submit function
+		$scope.save = function(role,ev){
+			$scope.roledata = angular.copy(role);
+			console.log($scope.roledata);
+			if($scope.roleOption == "Add"){
+				$scope.addLocation($scope.roledata,ev);
+			}
+			else{
+				$scope.editLocation($scope.roledata,ev);
+			}
+		}
+
+	}]) // role master form control
+
