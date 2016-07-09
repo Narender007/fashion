@@ -1560,3 +1560,222 @@ angular.module("fashion_controller",[ ])
 
 	}]) // role master form control
 
+// brand controller
+	.controller('brandTableCtrl',['$scope','brandService','$state',function($scope,brandService,$state){
+		console.log('brandTableCtrl');
+
+		$scope.initEvent = function(){
+			$('#userTable tbody').on( 'click', '.tdelete', function () {
+				console.log("delete called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				// call master confirm
+				var msg = "Delete Brand";
+				var msgBody = "Are You Sure you want to delete brand " + data.name;
+				$scope.masterConf(msg,msgBody,function(result){
+					if(result){
+						$scope.deleteBrand(data.id);
+					}else{
+						// you decided not to delete
+					}
+				});
+
+			});
+
+			$('#userTable tbody').on( 'click', '.tedit', function () {
+				console.log("edit called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				$scope.editBrand(data.id);
+			});
+		}
+
+		// function for edit
+		$scope.editBrand = function(userid){
+			// go to add or edit screen
+			var param = {};
+			param.id = userid;
+			$state.go('admin.brands',param);
+		}
+
+		$scope.deleteBrand = function(id){
+			console.log(id);
+			brandService.deleteBrand(id)
+				.then(function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterAlert(responseData.msgtype,responseData.msg,null);
+						}
+						else{
+							console.log("Deleted successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$scope.fetchAllBrand();
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					});
+
+		}
+
+
+
+		$scope.userTable = null;
+		$scope.fetchAllBrand = function(){
+			if($scope.userTable != null)
+			{
+				$scope.userTable.destroy();
+			}
+			// call service methord
+			brandService.fetchallbrand()
+				.then(
+					function(responseData){
+						console.log(responseData);
+						$scope.userTable = $('#userTable').DataTable( {
+							"data":   responseData ,
+							"destroy": true,
+							"columns": [
+								{ "data": "name" },
+								{ "data": "description" },
+								{ "data": null }
+							],
+							"columnDefs": [ {
+								"targets": -1,
+								"data": null,
+								"defaultContent": "<button class='tedit'>Edit</button><button class='tdelete'>Delete</button>"
+							}
+							]
+
+
+						});
+						// Now initialize click event for edit and delete
+						$scope.initEvent();
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		};
+
+		$scope.fetchAllBrand();
+
+	}]) // user master table control
+
+	.controller('brandFormCtrl',['$scope','brandService','$stateParams','$state',function($scope,brandService,$stateParams,$state){
+		console.log("brandFormCtrl");
+		$scope.brandData = {};
+		if($stateParams.id == -1){
+			$scope.brandOption = "Add";
+		}
+		else{
+			$scope.brandOption = "Edit";
+			brandService.fetchBrandByID($stateParams.id)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$state.go('admin.brand');
+							});
+						}
+						else{
+							var data = JSON.parse(responseData.brand);
+							console.log(data);
+							$scope.formdata = angular.copy(data);
+							setTimeout(function(){
+								$scope.$apply();
+							},300)
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		}
+
+		// Reset Function
+		$scope.reset  = function(userform)
+		{
+			if (userform) {
+				userform.$setPristine();
+				userform.$setUntouched();
+			}
+			$scope.formdata = angular.copy($scope.brandData);
+		};
+
+		$scope.cancel = function(){
+			var msg = "Cancel";
+			var msgBody =  "Are you sure You want to cancel " +$scope.brandOption + " process";
+			// call the master confirm dialog
+			$scope.masterConf(msg,msgBody,function(result){
+				console.log(result);
+				if(result){
+					$state.go('admin.brand');
+				}else{
+					// you decided not to cancel the process
+				}
+			});
+		};
+
+		$scope.addBrand  = function(user,ev){
+			// add brand
+			//call the add service
+			brandService.addBrand(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Add successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.brand');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+		// edit user
+		$scope.editBrand  = function(user,ev){
+			// edit Brand
+			//call the add service
+			brandService.editBrand(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Edit successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.brand');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+
+		/// submit function
+		$scope.save = function(role,ev){
+			$scope.brandData = angular.copy(role);
+			console.log($scope.brandData);
+			if($scope.brandOption == "Add"){
+				$scope.addBrand($scope.brandData,ev);
+			}
+			else{
+				$scope.editBrand($scope.brandData,ev);
+			}
+		}
+
+	}]) // role master form control

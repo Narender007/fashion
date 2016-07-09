@@ -144,6 +144,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
               },
               controller:"unitMappingMasterFormCtrl"
           })
+// product brand state definitions
+          .state('admin.brand',{
+              url:"/brands",
+              templateUrl:"resources/templates/admin/brand.jsp",
+              controller:"brandTableCtrl"
+          })
+
+          .state('admin.brands',{
+              url:"/brand/:id",
+              templateUrl:"resources/templates/admin/brands.jsp",
+              controller:"brandFormCtrl"
+          })
 
 });
 

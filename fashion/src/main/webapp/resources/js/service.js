@@ -450,5 +450,73 @@ angular.module("fashion_services",[ ])
 	}])
 
 // unit  ends
+// brand service start
+	.service('brandService',['$http','$q', function($http,$q){
+		return{
+			fetchallbrand: function(){
+				return $http.get(path + '/getAllProductBrand/')
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while fetching Product Brand');
+							return $q.reject(errResponse);
+						});
+			},   // fetchallunit
+
+			addBrand: function(data){
+				return $http.post(path + '/createProductBrand/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while creating Product Brand');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			fetchBrandByID: function (data) {
+				return $http.get(path + '/getProductBrandById/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Geting Product Brand by id');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // fetchRoleByID
+
+			editBrand: function(data){
+				return $http.post(path + '/updateProductBrand/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while updating Product Brand');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+			deleteBrand: function (data) {
+				return $http.get(path + '/deleteProductBrand/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Deleting  Product Brand');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // DeleteBrand
+
+		}// outer return end
+	}])
 
 
