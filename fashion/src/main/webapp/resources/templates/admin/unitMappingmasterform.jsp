@@ -48,7 +48,7 @@
 						</div>
 						<div class="col-md-6 col-xs-12 form-group">
 							<label for="Description">Description</label>
-							<textarea class="form-control" name="Description" ng-model="formdata.description" rows="5" ng-model-options="{ updateOn: 'blur' }" placeholder=" Description/Note" ></textarea>
+							<textarea class="form-control" name="Description" ng-model="formdata.mappingDesc" rows="5" ng-model-options="{ updateOn: 'blur' }" placeholder=" Description/Note" ></textarea>
 						</div>
 
 	                </div>

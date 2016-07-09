@@ -38,7 +38,7 @@ public class UnitMappingController {
 	    public ResponseEntity<String> createUnitMapping(@RequestBody UnitMapping unitMapping,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("unit MappingName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -68,7 +68,7 @@ public class UnitMappingController {
 	    public ResponseEntity<String> updateUnitMapping(@RequestBody UnitMapping unitMapping,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("unit MappingName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -113,11 +113,10 @@ public class UnitMappingController {
 	        System.out.println("Fetching UnitMapping with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("unit MappingName") == null)
-	        {
-	        	obj.put("msgtype", "ERROR");
-				obj.put("msg", "Your Session has expired please login to continue");
-	        }else{
+	        if(httpSession.getAttribute("userName") == null){
+				   obj.put("msgtype", "ERROR");
+				   obj.put("msg", "You session has expired please login again");
+			   }else{
 	        	UnitMapping unitMapping = unitMappingService.getUnitMapping(id);
 	 	        if (unitMapping == null) {
 	 	            System.out.println("UnitMapping with id " + id + " not found");
@@ -150,11 +149,10 @@ public class UnitMappingController {
 	        System.out.println("Deleting UnitMapping with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("unit MappingName") == null)
-	        {
-	        	obj.put("msgtype", "ERROR");
-				obj.put("msg", "Your Session has expired please login to continue");
-	        }else{
+	        if(httpSession.getAttribute("userName") == null){
+				   obj.put("msgtype", "ERROR");
+				   obj.put("msg", "You session has expired please login again");
+			   }else{
 	        	UnitMapping unitMapping = unitMappingService.getUnitMapping(id);
 	        	unitMapping.setStatus(2);
 	        	unitMapping.setModifiedBy((String) httpSession.getAttribute("unit MappingName"));

@@ -1280,9 +1280,33 @@ angular.module("fashion_controller",[ ])
 			var msgtype = "ERROR";
 			var msg = "Error Fetching Dependcy Data. Try again or contact Support";
 			$scope.masterCallbackAlert(msgtype,msg,null,function(result){
-				$state.go('admin.unitMappingmastertable');
+				$state.go('admin.admin.dashbord');
 			});
 		}
+		
+		// mapping of id with name logic
+		   $scope.getUnitByID = function(id){
+			 var obj =    $.grep($scope.unitData,function(p,q){
+			    	  return p.id == id;
+			    });
+			  if(obj.length == 0){
+				  return null;
+			  }else{
+				  return obj[0].name;
+			  }
+		   }
+		   
+		   $scope.mapName = function(data){
+			   for(var i=0; i<data.length;i++){
+				   data[i].fromUnit = $scope.getUnitByID(data[i].fromUnit);
+				   data[i].toUnit = $scope.getUnitByID(data[i].toUnit);
+			   }
+			   console.log(data);
+			   return data;
+		   }
+		
+		// mapping of id with name logic
+		
 		$scope.initEvent = function(){
 			$('#userTable tbody').on( 'click', '.tdelete', function () {
 				console.log("delete called");
@@ -1348,9 +1372,8 @@ angular.module("fashion_controller",[ ])
 			unitMappingmasterservice.fetchallunitMapping()
 				.then(
 					function(responseData){
-						console.log(responseData);
 						$scope.userTable = $('#userTable').DataTable( {
-							"data":   responseData ,
+							"data":   $scope.mapName(responseData) ,
 							"destroy": true,
 							"columns": [
 								{ "data": "fromUnit" },
@@ -1409,10 +1432,10 @@ angular.module("fashion_controller",[ ])
 			}
 			else{
 				$scope.tounitData = $.grep($scope.unitData,function(p,q){
-					 return  p.id == numb;
+					 return  p.id != numb;
 				});
 				console.log($scope.tounitData);
-				$scope.floorFlag = false;
+				$scope.toDataFlag = false;
 			}
 			setTimeout(function(){
 				$scope.$apply();
@@ -1501,7 +1524,7 @@ angular.module("fashion_controller",[ ])
 		$scope.editUnitMapping  = function(user,ev){
 			// edit Unit Mapping
 			//call the add service
-			unitmasterservice.editUnitMapping(user)
+			unitMappingmasterservice.editUnitMapping(user)
 				.then(
 					function(responseData){
 						if(responseData.msgtype == "ERROR")
