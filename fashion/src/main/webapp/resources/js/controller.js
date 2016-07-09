@@ -1118,7 +1118,7 @@ angular.module("fashion_controller",[ ])
 				$scope.userTable.destroy();
 			}
 			// call service methord
-			unitmasterservice.fetchallrole()
+			unitmasterservice.fetchallunit()
 				.then(
 					function(responseData){
 						console.log(responseData);
@@ -1126,7 +1126,6 @@ angular.module("fashion_controller",[ ])
 							"data":   responseData ,
 							"destroy": true,
 							"columns": [
-								{ "data": "id" },
 								{ "data": "name" },
 								{"data" : "description"},
 								{ "data": null }
@@ -1223,7 +1222,7 @@ angular.module("fashion_controller",[ ])
 						else{
 							console.log("Add successful");
 							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
-								$state.go('admin.rolemastertable');
+								$state.go('admin.unitmastertable');
 							});
 						}
 					},
@@ -1262,12 +1261,12 @@ angular.module("fashion_controller",[ ])
 		/// submit function
 		$scope.save = function(role,ev){
 			$scope.unitData = angular.copy(role);
-			console.log($scope.unitdata);
+			console.log($scope.unitData);
 			if($scope.unitOption == "Add"){
-				$scope.addUnit($scope.unitdata,ev);
+				$scope.addUnit($scope.unitData,ev);
 			}
 			else{
-				$scope.editUnit($scope.unitdata,ev);
+				$scope.editUnit($scope.unitData,ev);
 			}
 		}
 

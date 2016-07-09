@@ -37,9 +37,9 @@
 
 				<!-- Unit dropdown -->
 				<li class="dropdown">
-				<a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Location <span class="caret"></span></a>
+				<a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Product <span class="caret"></span></a>
 				<ul class="dropdown-menu">
-				<li><a ui-sref="admin.unitmastertable">Unit/Warehouse</a></li>
+				<li><a ui-sref="admin.unitmastertable">Unit</a></li>
 				<li><a ui-sref="admin.indoormastertable">Indoor  Location</a></li>
 				</ul>
 				</li>

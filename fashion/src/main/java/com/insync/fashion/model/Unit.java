@@ -21,7 +21,7 @@ public class Unit implements Serializable {
 	    @GeneratedValue(strategy = GenerationType.AUTO)
 	    private long id;
 	    private String name;
-	    private String description;
+	    private String description;//description
 	    private int status;
 	    private String createdBy;
 	    private String modifiedBy;

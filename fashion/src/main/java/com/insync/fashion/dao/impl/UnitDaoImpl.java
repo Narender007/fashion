@@ -64,7 +64,7 @@ public class UnitDaoImpl implements UnitDao {
 	public boolean isnameConflict(Unit Unit) {
 		// TODO Auto-generated method stub
 				boolean result = true;
-				org.hibernate.Query query = (org.hibernate.Query) sessionFactory.getCurrentSession().createQuery("FROM Unit WHERE Unitname =:Unitname");
+				org.hibernate.Query query = (org.hibernate.Query) sessionFactory.getCurrentSession().createQuery("FROM Unit WHERE name =:Unitname");
 				 query.setParameter("Unitname", Unit.getName());
 				
 				List<Unit> UnitList =  query.list();
@@ -81,7 +81,7 @@ public class UnitDaoImpl implements UnitDao {
 	public boolean editnameConflict(Unit Unit) {
 		// TODO Auto-generated method stub
 		boolean result = true;
-		org.hibernate.Query query = (org.hibernate.Query) sessionFactory.getCurrentSession().createQuery("FROM Unit WHERE Unitname =:Unitname and id !="+ Unit.getId());
+		org.hibernate.Query query = (org.hibernate.Query) sessionFactory.getCurrentSession().createQuery("FROM Unit WHERE Unitname =:name and id !="+ Unit.getId());
 		 query.setParameter("Unitname", Unit.getName());
 		
 		List<Unit> UnitList =  query.list();
