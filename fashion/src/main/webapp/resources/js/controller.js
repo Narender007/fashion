@@ -1271,7 +1271,7 @@ angular.module("fashion_controller",[ ])
 	}]) // role master form control
 
 // unit mapping master controller
-	.controller('unitMappingMasterTableCtrl',['$scope','unitData','unitmasterservice','$state',function($scope,unitData,unitmasterservice,$state){
+	.controller('unitMappingMasterTableCtrl',['$scope','unitData','unitMappingmasterservice','$state',function($scope,unitData,unitMappingmasterservice,$state){
 		console.log('unitMappingMasterTableCtrl');
 		$scope.unitData = unitData.unit;
 		if($scope.unitData.length > 0){
