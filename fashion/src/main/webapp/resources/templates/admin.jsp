@@ -40,7 +40,7 @@
 				<a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Product <span class="caret"></span></a>
 				<ul class="dropdown-menu">
 				<li><a ui-sref="admin.unitmastertable">Unit</a></li>
-				<li><a ui-sref="admin.indoormastertable">Indoor  Location</a></li>
+				<li><a ui-sref="admin.unitMappingmastertable">Unit Conversion Rule</a></li>
 				</ul>
 				</li>
 				<!-- Unit dwopdown ends -->
