@@ -97,6 +97,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
               controller:"indoorMasterFormCtrl"
           })
 
+// state difinition for unit tabplates
+          .state('admin.unitmastertable',{
+              url:"/unitMaster",
+              templateUrl:"resources/templates/admin/unitmastertable.jsp",
+              controller:"unitMasterTableCtrl"
+          })
+
+          .state('admin.unitAddEdit',{
+              url:"/unitForm/:id",
+              templateUrl:"resources/templates/admin/unitmasterform.jsp",
+              controller:"unitMasterFormCtrl"
+          })
 
 
 

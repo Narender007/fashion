@@ -310,4 +310,73 @@ angular.module("fashion_services",[ ])
 	}])
 
 // indoor location service ends
+// unit service start
+	.service('unitmasterservice',['$http','$q', function($http,$q){
+		return{
+			fetchallunit: function(){
+				return $http.get(path + '/getAllUnit/')
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while fetching unit');
+							return $q.reject(errResponse);
+						});
+			},   // fetchallunit
+
+			addUnit: function(data){
+				return $http.post(path + '/createUnit/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while creating unit');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			fetchUnitByID: function (data) {
+				return $http.get(path + '/getUnitById/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Geting Unit by id');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // fetchRoleByID
+
+			editUnit: function(data){
+				return $http.post(path + '/updateUnit/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while updating Unit');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+			deleteUnit: function (data) {
+				return $http.get(path + '/deleteUnit/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Deleting  Unit');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // DeleteRole
+
+		}// outer return end
+	}])
+
 

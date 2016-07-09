@@ -1050,3 +1050,226 @@ angular.module("fashion_controller",[ ])
 
 	}]) // role master form control
 
+// unit controllers
+
+
+	.controller('unitMasterTableCtrl',['$scope','unitmasterservice','$state',function($scope,unitmasterservice,$state){
+		console.log('unitMasterTableCtrl');
+
+		$scope.initEvent = function(){
+			$('#userTable tbody').on( 'click', '.tdelete', function () {
+				console.log("delete called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				// call master confirm
+				var msg = "Delete unit";
+				var msgBody = "Are You Sure you want to delete unit " + data.roleName;
+				$scope.masterConf(msg,msgBody,function(result){
+					if(result){
+						$scope.deleteUnit(data.id);
+					}else{
+						// you decided not to delete
+					}
+				});
+
+			});
+
+			$('#userTable tbody').on( 'click', '.tedit', function () {
+				console.log("edit called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				$scope.editUnit(data.id);
+			});
+		}
+
+		// function for edit
+		$scope.editUnit = function(userid){
+			// go to add or edit screen
+			var param = {};
+			param.id = userid;
+			$state.go('admin.unitAddEdit',param);
+		}
+
+		$scope.deleteRole = function(id){
+			console.log(id);
+			rolemasterservice.deleteUnit(id)
+				.then(function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterAlert(responseData.msgtype,responseData.msg,null);
+						}
+						else{
+							console.log("Deleted successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$scope.fetchAllUnit();
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					});
+
+		}
+
+
+
+		$scope.userTable = null;
+		$scope.fetchAllUnit = function(){
+			if($scope.userTable != null)
+			{
+				$scope.userTable.destroy();
+			}
+			// call service methord
+			unitmasterservice.fetchallrole()
+				.then(
+					function(responseData){
+						console.log(responseData);
+						$scope.userTable = $('#userTable').DataTable( {
+							"data":   responseData ,
+							"destroy": true,
+							"columns": [
+								{ "data": "id" },
+								{ "data": "name" },
+								{"data" : "description"},
+								{ "data": null }
+							],
+							"columnDefs": [ {
+								"targets": -1,
+								"data": null,
+								"defaultContent": "<button class='tedit'>Edit</button><button class='tdelete'>Delete</button>"
+							}
+							]
+
+
+						});
+						// Now initialize click event for edit and delete
+						$scope.initEvent();
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		};
+
+		$scope.fetchAllUnit();
+
+	}]) // Unit master table control
+
+	.controller('unitMasterFormCtrl',['$scope','unitmasterservice','$stateParams','$state',function($scope,unitmasterservice,$stateParams,$state){
+		console.log("roleMasterFormCtrl");
+		$scope.unitData = {};
+		if($stateParams.id == -1){
+			$scope.unitOption = "Add";
+		}
+		else{
+			$scope.unitOption = "Edit";
+			unitmasterservice.fetchUnitByID($stateParams.id)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$state.go('admin.unitmastertable');
+							});
+						}
+						else{
+							var data = JSON.parse(responseData.unit);
+							console.log(data);
+							$scope.formdata = angular.copy(data);
+							setTimeout(function(){
+								$scope.$apply();
+							},300)
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		}
+
+		// Reset Function
+		$scope.reset  = function(userform)
+		{
+			if (userform) {
+				userform.$setPristine();
+				userform.$setUntouched();
+			}
+			$scope.formdata = angular.copy($scope.unitData);
+		};
+
+		$scope.cancel = function(){
+			var msg = "Cancel";
+			var msgBody =  "Are you sure You want to cancel " +$scope.unitOption + " process";
+			// call the master confirm dialog
+			$scope.masterConf(msg,msgBody,function(result){
+				console.log(result);
+				if(result){
+					$state.go('admin.unitmastertable');
+				}else{
+					// you decided not to cancel the process
+				}
+			});
+		};
+
+		$scope.addUnit  = function(user,ev){
+			// add user
+			//call the add service
+			unitmasterservice.addUnit(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Add successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.rolemastertable');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+		// edit Unit
+		$scope.editUnit  = function(user,ev){
+			// edit role
+			//call the add service
+			unitmasterservice.editUnit(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Edit successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.unitmastertable');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+
+		/// submit function
+		$scope.save = function(role,ev){
+			$scope.unitData = angular.copy(role);
+			console.log($scope.unitdata);
+			if($scope.unitOption == "Add"){
+				$scope.addUnit($scope.unitdata,ev);
+			}
+			else{
+				$scope.editUnit($scope.unitdata,ev);
+			}
+		}
+
+	}]) // role master form control
+
