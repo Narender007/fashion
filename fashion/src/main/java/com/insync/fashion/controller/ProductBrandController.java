@@ -38,7 +38,7 @@ public class ProductBrandController {
 	    public ResponseEntity<String> createProductBrand(@RequestBody ProductBrand brand,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("productbrandName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -68,7 +68,7 @@ public class ProductBrandController {
 	    public ResponseEntity<String> updateProductBrand(@RequestBody ProductBrand brand,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("productbrandName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -113,7 +113,7 @@ public class ProductBrandController {
 	        System.out.println("Fetching ProductBrand with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("productbrandName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
@@ -150,7 +150,7 @@ public class ProductBrandController {
 	        System.out.println("Deleting ProductBrand with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("productbrandName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
