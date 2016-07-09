@@ -310,7 +310,77 @@ angular.module("fashion_services",[ ])
 	}])
 
 // indoor location service ends
-// unit service start
+// unit mapping service start
+	.service('unitMappingmasterservice',['$http','$q', function($http,$q){
+		return{
+			fetchallunitMapping: function(){
+				return $http.get(path + '/getAllUnitMapping/')
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while fetching unit Mapping');
+							return $q.reject(errResponse);
+						});
+			},   // fetchallunit
+
+			addUnitMapping: function(data){
+				return $http.post(path + '/createUnitMapping/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while creating unit Mapping');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			fetchUnitMappingByID: function (data) {
+				return $http.get(path + '/getUnitMappingById/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Geting Unit Mapping by id');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // fetchRoleByID
+
+			editUnitMapping: function(data){
+				return $http.post(path + '/updateUnitMapping/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while updating Unit Mapping');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+			deleteUnitMapping: function (data) {
+				return $http.get(path + '/deleteUnitMapping/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Deleting  Unit Mapping');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // DeleteMapping
+
+		}// outer return end
+	}])
+
+// unit mapping master ends
+// unit  service starts
 	.service('unitmasterservice',['$http','$q', function($http,$q){
 		return{
 			fetchallunit: function(){
@@ -378,5 +448,7 @@ angular.module("fashion_services",[ ])
 
 		}// outer return end
 	}])
+
+// unit  ends
 
 

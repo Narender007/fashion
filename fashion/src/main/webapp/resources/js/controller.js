@@ -1051,8 +1051,6 @@ angular.module("fashion_controller",[ ])
 	}]) // role master form control
 
 // unit controllers
-
-
 	.controller('unitMasterTableCtrl',['$scope','unitmasterservice','$state',function($scope,unitmasterservice,$state){
 		console.log('unitMasterTableCtrl');
 
@@ -1062,7 +1060,7 @@ angular.module("fashion_controller",[ ])
 				var data = $scope.userTable.row( $(this).parents('tr') ).data();
 				// call master confirm
 				var msg = "Delete unit";
-				var msgBody = "Are You Sure you want to delete unit " + data.roleName;
+				var msgBody = "Are You Sure you want to delete unit " + data.name;
 				$scope.masterConf(msg,msgBody,function(result){
 					if(result){
 						$scope.deleteUnit(data.id);
@@ -1088,9 +1086,9 @@ angular.module("fashion_controller",[ ])
 			$state.go('admin.unitAddEdit',param);
 		}
 
-		$scope.deleteRole = function(id){
+		$scope.deleteUnit = function(id){
 			console.log(id);
-			rolemasterservice.deleteUnit(id)
+			unitmasterservice.deleteUnit(id)
 				.then(function(responseData){
 						if(responseData.msgtype == "ERROR")
 						{
@@ -1267,6 +1265,273 @@ angular.module("fashion_controller",[ ])
 			}
 			else{
 				$scope.editUnit($scope.unitData,ev);
+			}
+		}
+
+	}]) // role master form control
+
+// unit mapping master controller
+	.controller('unitMappingMasterTableCtrl',['$scope','unitData','unitmasterservice','$state',function($scope,unitData,unitmasterservice,$state){
+		console.log('unitMappingMasterTableCtrl');
+		$scope.unitData = unitData.unit;
+		if($scope.unitData.length > 0){
+			// set the location field
+		}else{
+			var msgtype = "ERROR";
+			var msg = "Error Fetching Dependcy Data. Try again or contact Support";
+			$scope.masterCallbackAlert(msgtype,msg,null,function(result){
+				$state.go('admin.unitMappingmastertable');
+			});
+		}
+		$scope.initEvent = function(){
+			$('#userTable tbody').on( 'click', '.tdelete', function () {
+				console.log("delete called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				// call master confirm
+				var msg = "Delete unit Mapping";
+				var msgBody = "Are You Sure you want to delete unit Mapping " + data.name;
+				$scope.masterConf(msg,msgBody,function(result){
+					if(result){
+						$scope.deleteUnitMapping(data.id);
+					}else{
+						// you decided not to delete
+					}
+				});
+
+			});
+
+			$('#userTable tbody').on( 'click', '.tedit', function () {
+				console.log("edit called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				$scope.editUnitMapping(data.id);
+			});
+		}
+
+		// function for edit
+		$scope.editUnitMapping = function(userid){
+			// go to add or edit screen
+			var param = {};
+			param.id = userid;
+			$state.go('admin.unitMappingAddEdit',param);
+		}
+
+		$scope.deleteUnitMapping = function(id){
+			console.log(id);
+			unitMappingmasterservice.deleteUnitMapping(id)
+				.then(function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterAlert(responseData.msgtype,responseData.msg,null);
+						}
+						else{
+							console.log("Deleted successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$scope.fetchAllUnitMapping();
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					});
+
+		}
+
+
+
+		$scope.userTable = null;
+		$scope.fetchAllUnitMapping = function(){
+			if($scope.userTable != null)
+			{
+				$scope.userTable.destroy();
+			}
+			// call service methord
+			unitMappingmasterservice.fetchallunitMapping()
+				.then(
+					function(responseData){
+						console.log(responseData);
+						$scope.userTable = $('#userTable').DataTable( {
+							"data":   responseData ,
+							"destroy": true,
+							"columns": [
+								{ "data": "fromUnit" },
+								{ "data": "toUnit" },
+								{"data" : "conversionFactor"},
+								{"data" : "mappingDesc"},
+								{ "data": null }
+							],
+							"columnDefs": [ {
+								"targets": -1,
+								"data": null,
+								"defaultContent": "<button class='tedit'>Edit</button><button class='tdelete'>Delete</button>"
+							}
+							]
+
+
+						});
+						// Now initialize click event for edit and delete
+						$scope.initEvent();
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		};
+
+		$scope.fetchAllUnitMapping();
+
+	}]) // Unit master table control
+
+	.controller('unitMappingMasterFormCtrl',['$scope','unitData','unitMappingmasterservice','$stateParams','$state',function($scope,unitData,unitMappingmasterservice,$stateParams,$state){
+		console.log("unitMappingMasterFormCtrl");
+		$scope.toDataFlag = true;
+		$scope.tounitData = [];
+		$scope.unitData = unitData.unit;
+		if($scope.unitData.length > 0){
+			// set the location field
+		}else{
+			var msgtype = "ERROR";
+			var msg = "Error Fetching Dependcy Data. Try again or contact Support";
+			$scope.masterCallbackAlert(msgtype,msg,null,function(result){
+				$state.go('admin.unitMappingmastertable');
+			});
+		}
+
+		$scope.$watch('formdata.fromUnit', function() {
+			console.log($scope.formdata.fromUnit);
+			$scope.arrayGenerator($scope.formdata.fromUnit);
+		});
+
+		$scope.arrayGenerator = function(numb){
+			if(numb == 0 || numb == undefined )
+			{
+				$scope.tounitData = [ ];
+				$scope.toDataFlag = true;
+			}
+			else{
+				$scope.tounitData = $.grep($scope.unitData,function(p,q){
+					 return  p.id == numb;
+				});
+				console.log($scope.tounitData);
+				$scope.floorFlag = false;
+			}
+			setTimeout(function(){
+				$scope.$apply();
+			},300);
+		}
+
+		$scope.unitMappingData = {};
+		if($stateParams.id == -1){
+			$scope.unitMappingOption = "Add";
+		}
+		else{
+			$scope.unitMappingOption = "Edit";
+			unitMappingmasterservice.fetchUnitMappingByID($stateParams.id)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$state.go('admin.unitMappingmastertable');
+							});
+						}
+						else{
+							var data = JSON.parse(responseData.unitMapping);
+							console.log(data);
+							$scope.formdata = angular.copy(data);
+							setTimeout(function(){
+								$scope.$apply();
+							},300)
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		}
+
+		// Reset Function
+		$scope.reset  = function(userform)
+		{
+			if (userform) {
+				userform.$setPristine();
+				userform.$setUntouched();
+			}
+			$scope.formdata = angular.copy($scope.unitMappingData);
+		};
+
+		$scope.cancel = function(){
+			var msg = "Cancel";
+			var msgBody =  "Are you sure You want to cancel " +$scope.unitMappingOption + " process";
+			// call the master confirm dialog
+			$scope.masterConf(msg,msgBody,function(result){
+				console.log(result);
+				if(result){
+					$state.go('admin.unitMappingmastertable');
+				}else{
+					// you decided not to cancel the process
+				}
+			});
+		};
+
+		$scope.addUnitMapping  = function(user,ev){
+			// add user
+			//call the add service
+			unitMappingmasterservice.addUnitMapping(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Add successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.unitMappingmastertable');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+		// edit Unit
+		$scope.editUnitMapping  = function(user,ev){
+			// edit Unit Mapping
+			//call the add service
+			unitmasterservice.editUnitMapping(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Edit successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.unitMappingmastertable');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+
+		/// submit function
+		$scope.save = function(role,ev){
+			$scope.unitMappingData = angular.copy(role);
+			console.log($scope.unitMappingData);
+			if($scope.unitMappingOption == "Add"){
+				$scope.addUnitMapping($scope.unitMappingData,ev);
+			}
+			else{
+				$scope.editUnitMapping($scope.unitMappingData,ev);
 			}
 		}
 

@@ -10,7 +10,7 @@
 		             <div class="row">
 		                <div class="col-md-6 col-xs-12 form-group">
 		                    <label for="userName">Unit Name</label>
-				            <input type="text" class="form-control" name="name" ng-model="formdata.name"  ng-model-options="{ updateOn: 'blur' }" placeholder="rolename" required="">
+				            <input type="text" class="form-control" name="name" ng-model="formdata.name"  ng-model-options="{ updateOn: 'blur' }" placeholder="Unit name" required="">
 		               
 		                 <!-- error msg handling  -->
 						    <div ng-show="userform.$submitted || userform.name.$touched">

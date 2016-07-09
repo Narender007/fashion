@@ -110,7 +110,40 @@ app.config(function($stateProvider, $urlRouterProvider) {
               controller:"unitMasterFormCtrl"
           })
 
+// state definition for unit mapping templates
+          .state('admin.unitMappingmastertable',{
+              url:"/unitMappingMaster",
+              templateUrl:"resources/templates/admin/unitMappingmastertable.jsp",
+              resolve:{
+                  unitData:  function($http,unitmasterservice){
+                      return unitmasterservice.fetchallunit()
+                          .then (function (data) {
+                                  return {unit:data};
+                              },
+                              function(errResponse){
+                                  return {unit:{ }};
+                              });
+                  },
+              },
+              controller:"unitMappingMasterTableCtrl"
+          })
 
+          .state('admin.unitMappingAddEdit',{
+              url:"/unitMappingForm/:id",
+              templateUrl:"resources/templates/admin/unitMappingmasterform.jsp",
+              resolve:{
+                  unitData:  function($http,unitmasterservice){
+                      return unitmasterservice.fetchallunit()
+                          .then (function (data) {
+                                  return {unit:data};
+                              },
+                              function(errResponse){
+                                  return {unit:{ }};
+                              });
+                  },
+              },
+              controller:"unitMappingMasterFormCtrl"
+          })
 
 });
 
