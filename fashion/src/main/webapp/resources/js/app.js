@@ -80,6 +80,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
           .state('admin.indoorAddEdit',{
               url:"/indoorForm/:id",
               templateUrl:"resources/templates/admin/indoormasterform.jsp",
+              resolve:{
+                    storeData:function(sandwmasterservice){
+                        sandwmasterservice.fetchallsandw()
+                            .then (function (data) {
+                                return {store:data};
+                            },
+                            function(errResponse){
+                                 return {store:{ }};
+                            });
+                    }
+              },
               controller:"indoorMasterFormCtrl"
           })
 

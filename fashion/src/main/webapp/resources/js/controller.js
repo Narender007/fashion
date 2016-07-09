@@ -891,8 +891,9 @@ angular.module("fashion_controller",[ ])
 
 	}]) // user master table control
 
-	.controller('indoorMasterFormCtrl',['$scope','indoormasterservice','$stateParams','$state',function($scope,indoormasterservice,$stateParams,$state){
+	.controller('indoorMasterFormCtrl',['$scope','storeData','indoormasterservice','$stateParams','$state',function($scope,storeData,indoormasterservice,$stateParams,$state){
 		console.log("indoorMasterFormCtrl");
+		console.log(storeData.store);
 		$scope.locationData = {};
 		if($stateParams.id == -1){
 			$scope.locationOption = "Add";
