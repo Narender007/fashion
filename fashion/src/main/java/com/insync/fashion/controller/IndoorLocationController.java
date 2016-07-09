@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -103,6 +104,17 @@ public class IndoorLocationController {
 	        }
 	        return new ResponseEntity<List<IndoorLocation>>(users, HttpStatus.OK);
 	    }
+	    
+////-------------------Retrieve All Indoor location join query with place id--------------------------------------------------------
+	      
+	    @RequestMapping(value = "/getAllJoinLocation/", method = RequestMethod.GET)
+	    public ResponseEntity<String> getAllJoinLocation() {
+	        JSONArray location = indoorService.getJoinLocation();
+	        
+	        String u = (String) location.toJSONString();
+	        
+	        return new ResponseEntity<String>(u, HttpStatus.OK);
+	    }	    
 	    
 //-------------------Retrieve Single User--------------------------------------------------------
 	      

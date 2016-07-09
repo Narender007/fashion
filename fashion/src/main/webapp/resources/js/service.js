@@ -241,6 +241,19 @@ angular.module("fashion_services",[ ])
 							return $q.reject(errResponse);
 						});
 			},   // getAllLocation
+			
+			fetchallJoinlocation: function(){
+				return $http.get(path + '/getAllJoinLocation/')
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while fetching Location');
+							return $q.reject(errResponse);
+						});
+			},   // getAllJoinLocation
+			
 
 			addlocation: function(data){
 				return $http.post(path + '/createLocation/',data)

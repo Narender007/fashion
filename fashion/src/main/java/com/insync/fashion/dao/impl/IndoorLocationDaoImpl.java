@@ -1,12 +1,17 @@
 package com.insync.fashion.dao.impl;
 
+
+import java.util.Iterator;
 import java.util.List;
 
 import com.insync.fashion.dao.IndoorLocationDao;
 import com.insync.fashion.model.IndoorLocation;
 import com.insync.fashion.util.HibernateUtils;
 
+
 import org.hibernate.SessionFactory;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -93,5 +98,29 @@ public class IndoorLocationDaoImpl implements IndoorLocationDao {
 		 
 		return result;
 	}
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public JSONArray getJoinLocation() {
+		// TODO Auto-generated method stub
+		   JSONArray array = new JSONArray();
+		  
+		    Iterator objIterator =   sessionFactory.getCurrentSession().createSQLQuery("SELECT indoorLocation.id,indoorLocation.name,indoorLocation.floorNo,indoorLocation.description,store_Warehouse.name as outerplace FROM indoorLocation left join store_Warehouse on indoorLocation.placeId = store_Warehouse.id where indoorLocation.status = 1 ").list().iterator();
+		    
+		    while(objIterator.hasNext()){
+		    	 Object [] tuple = (Object[]) objIterator.next();
+		    	 JSONObject obj = new JSONObject();
+		    	  obj.put("id", tuple[0]);
+		    	  obj.put("name", tuple[1]);
+		    	  obj.put("floorNo", tuple[2]);
+		    	  obj.put("outerplace", tuple[3]);
+		    	  obj.put("description", tuple[4]);
+		    	  array.add(obj);
+		    }
+		return array;
+	}
+	
+	
+	
 
 }

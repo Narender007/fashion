@@ -23,11 +23,7 @@
 		                <div class="col-md-6 col-xs-12 form-group">
 							<label for="placeId">Location Belongs To : </label>
 							<select class="form-control" name="placeId" ng-model="formdata.placeId"  required="">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="4">5</option>
+							<option ng-repeat="store in storeData" value="{{store.id}}">{{store.name}}</option>
 							</select>
 		                 <!-- error msg handling  -->
 						    <div ng-show="userform.$submitted || userform.placeId.$touched">
@@ -42,12 +38,8 @@
 		             <div class="row">
 		                <div class="col-md-6 col-xs-12 form-group">
 							<label for="floorNo">Location is on Floor : </label>
-							<select class="form-control" name="floorNo" ng-model="formdata.floorNo"  required="">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="4">5</option>
+							<select id ="floorSelect" class="form-control" name="floorNo"  ng-model="formdata.floorNo" ng-disabled="floorFlag" required="">
+								<option ng-repeat="floor in floorArray" value="{{floor}}">{{floor}}</option>
 							</select>
 		                  <!-- error msg handling  -->
 						    <div ng-show="userform.$submitted || userform.floorNo.$touched">

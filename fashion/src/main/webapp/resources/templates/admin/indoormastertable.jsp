@@ -15,10 +15,9 @@
 		        <thead>
 		            <tr>
 		                <th>Name</th>
-		                <th>UserId</th>
-		                <th>Role</th>
-		                <th>Phone</th>
-		                <th>Email</th>
+		                <th>FloorNo</th>
+		                <th>Parent Location</th>
+		                <th>Description</th>
 		                <th>Action</th>
 		             </tr>
 		        </thead>

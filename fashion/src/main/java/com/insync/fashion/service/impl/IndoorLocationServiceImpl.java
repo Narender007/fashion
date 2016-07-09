@@ -1,6 +1,8 @@
 package com.insync.fashion.service.impl;
 
 import java.util.List;
+
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +65,12 @@ public class IndoorLocationServiceImpl implements IndoorLocationService {
 	public boolean editnameConflict(IndoorLocation IndoorLocation) {
 		// TODO Auto-generated method stub
 		return indoorlocationDao.editnameConflict(IndoorLocation);
+	}
+
+	@Override
+	public JSONArray getJoinLocation() {
+		// TODO Auto-generated method stub
+		return indoorlocationDao.getJoinLocation();
 	}
 
 }

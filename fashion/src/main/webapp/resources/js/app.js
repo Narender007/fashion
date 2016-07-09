@@ -81,15 +81,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
               url:"/indoorForm/:id",
               templateUrl:"resources/templates/admin/indoormasterform.jsp",
               resolve:{
-                    storeData:function(sandwmasterservice){
-                        sandwmasterservice.fetchallsandw()
-                            .then (function (data) {
-                                return {store:data};
-                            },
-                            function(errResponse){
-                                 return {store:{ }};
-                            });
-                    }
+            	  simpleObj:  function(){
+                      return {value: 'simple!'};
+                   },
+                   storeData:  function($http,sandwmasterservice){
+                       return sandwmasterservice.fetchallsandw()
+                       .then (function (data) {
+                           return {store:data};
+                       },
+                       function(errResponse){
+                            return {store:{ }};
+                       });
+                    }, 
               },
               controller:"indoorMasterFormCtrl"
           })

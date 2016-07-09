@@ -857,16 +857,19 @@ angular.module("fashion_controller",[ ])
 				$scope.userTable.destroy();
 			}
 			// call service methord
-			indoormasterservice.fetchalllocation()
+			indoormasterservice.fetchallJoinlocation()
 				.then(
 					function(responseData){
+						console.log("responseData");
 						console.log(responseData);
 						$scope.userTable = $('#userTable').DataTable( {
 							"data":   responseData ,
 							"destroy": true,
 							"columns": [
-								{ "data": "id" },
 								{ "data": "name" },
+								{ "data": "floorNo" },
+								{ "data": "description" },
+								{ "data": "outerplace" },
 								{ "data": null }
 							],
 							"columnDefs": [ {
@@ -893,7 +896,42 @@ angular.module("fashion_controller",[ ])
 
 	.controller('indoorMasterFormCtrl',['$scope','storeData','indoormasterservice','$stateParams','$state',function($scope,storeData,indoormasterservice,$stateParams,$state){
 		console.log("indoorMasterFormCtrl");
-		console.log(storeData.store);
+		//console.log(storeData.store);
+		$scope.storeData = storeData.store;
+		$scope.floorArray = [ ];
+		$scope.floorFlag = true;
+		if($scope.storeData.length > 0){
+			// set the location field
+		}else{
+			var msgtype = "ERROR";
+			var msg = "Error Fetching Dependcy Data. Try again or contact Support";
+			$scope.masterCallbackAlert(msgtype,msg,null,function(result){
+				$state.go('admin.indoormastertable');
+			});
+		}
+		
+		$scope.$watch('formdata.placeId', function() {
+	       console.log($scope.formdata.placeId);
+	       $scope.arrayGenerator($scope.formdata.placeId);
+	    });
+		
+		$scope.arrayGenerator = function(numb){
+			if(numb == 0 || numb == undefined )
+				{
+				  $scope.floorArray = [ ];
+				  $scope.floorFlag = true;
+				}
+			else{
+				for(var i = 1; i<= numb;i++ ){
+					$scope.floorArray.push(i);
+				}
+				 $scope.floorFlag = false;
+			}
+			setTimeout(function(){
+				$scope.$apply();
+			},300);
+		}
+		
 		$scope.locationData = {};
 		if($stateParams.id == -1){
 			$scope.locationOption = "Add";
@@ -1000,13 +1038,13 @@ angular.module("fashion_controller",[ ])
 
 		/// submit function
 		$scope.save = function(role,ev){
-			$scope.roledata = angular.copy(role);
-			console.log($scope.roledata);
-			if($scope.roleOption == "Add"){
-				$scope.addLocation($scope.roledata,ev);
+			$scope.locationData = angular.copy(role);
+			console.log($scope.locationData);
+			if($scope.locationOption == "Add"){
+				$scope.addLocation($scope.locationData,ev);
 			}
 			else{
-				$scope.editLocation($scope.roledata,ev);
+				$scope.editLocation($scope.locationData,ev);
 			}
 		}
 
