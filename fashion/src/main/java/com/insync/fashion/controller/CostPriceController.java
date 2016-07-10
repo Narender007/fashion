@@ -38,7 +38,7 @@ public class CostPriceController {
 	    public ResponseEntity<String> createCostPrice(@RequestBody CostPrice price,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("sellingpriceName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -51,7 +51,7 @@ public class CostPriceController {
 			   else{
 				   // add missing parameters to price
 				   price.setStatus(1);
-				   price.setCreatedBy((String) httpSession.getAttribute("sellingpriceName"));
+				   price.setCreatedBy((String) httpSession.getAttribute("userName"));
 				   price.setCreatedDate(new java.util.Date());
 				    priceService.createCostPrice(price);
 				   obj.put("msgtype", "SUCCESS");
@@ -68,7 +68,7 @@ public class CostPriceController {
 	    public ResponseEntity<String> updateCostPrice(@RequestBody CostPrice price,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("sellingpriceName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -81,7 +81,7 @@ public class CostPriceController {
 			   else{
 				   // add missing parameters to costprices
 				   price.setStatus(1);
-				   price.setModifiedBy((String) httpSession.getAttribute("sellingpriceName"));
+				   price.setModifiedBy((String) httpSession.getAttribute("userName"));
 				   price.setModifiedDate(new java.util.Date());
 				   priceService.updateCostPrice(price);
 				   obj.put("msgtype", "SUCCESS");
@@ -113,7 +113,7 @@ public class CostPriceController {
 	        System.out.println("Fetching CostPrice with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("sellingpriceName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
@@ -150,14 +150,14 @@ public class CostPriceController {
 	        System.out.println("Deleting CostPrice with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("sellingpriceName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
 	        	CostPrice price = priceService.getCostPrice(id);
 	        	price.setStatus(2);
-	        	price.setModifiedBy((String) httpSession.getAttribute("sellingpriceName"));
+	        	price.setModifiedBy((String) httpSession.getAttribute("userName"));
 	        	price.setModifiedDate(new java.util.Date());
 	        	
 	        	priceService.updateCostPrice(price);

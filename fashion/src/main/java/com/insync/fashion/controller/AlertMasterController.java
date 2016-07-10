@@ -38,7 +38,7 @@ public class AlertMasterController {
 	    public ResponseEntity<String> createAlertMaster(@RequestBody AlertMaster alert,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("alertmasterName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -51,7 +51,7 @@ public class AlertMasterController {
 			   else{
 				   // add missing parameters to alert
 				   alert.setStatus(1);
-				   alert.setCreatedBy((String) httpSession.getAttribute("alertmasterName"));
+				   alert.setCreatedBy((String) httpSession.getAttribute("userName"));
 				   alert.setCreatedDate(new java.util.Date());
 				    alertService.createAlertMaster(alert);
 				   obj.put("msgtype", "SUCCESS");
@@ -68,7 +68,7 @@ public class AlertMasterController {
 	    public ResponseEntity<String> updateAlertMaster(@RequestBody AlertMaster alert,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("alertmasterName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -81,7 +81,7 @@ public class AlertMasterController {
 			   else{
 				   // add missing parameters to alertmasters
 				   alert.setStatus(1);
-				   alert.setModifiedBy((String) httpSession.getAttribute("alertmasterName"));
+				   alert.setModifiedBy((String) httpSession.getAttribute("userName"));
 				   alert.setModifiedDate(new java.util.Date());
 				   alertService.updateAlertMaster(alert);
 				   obj.put("msgtype", "SUCCESS");
@@ -113,7 +113,7 @@ public class AlertMasterController {
 	        System.out.println("Fetching AlertMaster with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("alertmasterName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
@@ -150,14 +150,14 @@ public class AlertMasterController {
 	        System.out.println("Deleting AlertMaster with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("alertmasterName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
 	        	AlertMaster alert = alertService.getAlertMaster(id);
 	        	alert.setStatus(2);
-	        	alert.setModifiedBy((String) httpSession.getAttribute("alertmasterName"));
+	        	alert.setModifiedBy((String) httpSession.getAttribute("userName"));
 	        	alert.setModifiedDate(new java.util.Date());
 	        	
 	        	alertService.updateAlertMaster(alert);

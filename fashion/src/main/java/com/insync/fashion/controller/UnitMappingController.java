@@ -51,7 +51,7 @@ public class UnitMappingController {
 			   else{
 				   // add missing parameters to unitMapping
 				   unitMapping.setStatus(1);
-				   unitMapping.setCreatedBy((String) httpSession.getAttribute("unit MappingName"));
+				   unitMapping.setCreatedBy((String) httpSession.getAttribute("userName"));
 				   unitMapping.setCreatedDate(new java.util.Date());
 				    unitMappingService.createUnitMapping(unitMapping);
 				   obj.put("msgtype", "SUCCESS");
@@ -81,7 +81,7 @@ public class UnitMappingController {
 			   else{
 				   // add missing parameters to unit Mappings
 				   unitMapping.setStatus(1);
-				   unitMapping.setModifiedBy((String) httpSession.getAttribute("unit MappingName"));
+				   unitMapping.setModifiedBy((String) httpSession.getAttribute("userName"));
 				   unitMapping.setModifiedDate(new java.util.Date());
 				   unitMappingService.updateUnitMapping(unitMapping);
 				   obj.put("msgtype", "SUCCESS");
@@ -155,7 +155,7 @@ public class UnitMappingController {
 			   }else{
 	        	UnitMapping unitMapping = unitMappingService.getUnitMapping(id);
 	        	unitMapping.setStatus(2);
-	        	unitMapping.setModifiedBy((String) httpSession.getAttribute("unit MappingName"));
+	        	unitMapping.setModifiedBy((String) httpSession.getAttribute("userName"));
 	        	unitMapping.setModifiedDate(new java.util.Date());
 	        	
 	        	unitMappingService.updateUnitMapping(unitMapping);

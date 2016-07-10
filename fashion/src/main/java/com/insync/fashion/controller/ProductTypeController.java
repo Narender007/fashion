@@ -51,7 +51,7 @@ public class ProductTypeController {
 			   else{
 				   // add missing parameters to type
 				   type.setStatus(1);
-				   type.setCreatedBy((String) httpSession.getAttribute("producttypeName"));
+				   type.setCreatedBy((String) httpSession.getAttribute("userName"));
 				   type.setCreatedDate(new java.util.Date());
 				    typeService.createProductType(type);
 				   obj.put("msgtype", "SUCCESS");
@@ -81,7 +81,7 @@ public class ProductTypeController {
 			   else{
 				   // add missing parameters to producttypes
 				   type.setStatus(1);
-				   type.setModifiedBy((String) httpSession.getAttribute("producttypeName"));
+				   type.setModifiedBy((String) httpSession.getAttribute("userName"));
 				   type.setModifiedDate(new java.util.Date());
 				   typeService.updateProductType(type);
 				   obj.put("msgtype", "SUCCESS");
@@ -157,7 +157,7 @@ public class ProductTypeController {
 	        }else{
 	        	ProductType type = typeService.getProductType(id);
 	        	type.setStatus(2);
-	        	type.setModifiedBy((String) httpSession.getAttribute("producttypeName"));
+	        	type.setModifiedBy((String) httpSession.getAttribute("userName"));
 	        	type.setModifiedDate(new java.util.Date());
 	        	
 	        	typeService.updateProductType(type);

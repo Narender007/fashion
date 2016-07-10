@@ -38,7 +38,7 @@ public class CustomerController {
 	    public ResponseEntity<String> createCustomer(@RequestBody Customer customer,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("customerName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -51,7 +51,7 @@ public class CustomerController {
 			   else{
 				   // add missing parameters to customer
 				   customer.setStatus(1);
-				   customer.setCreatedBy((String) httpSession.getAttribute("customerName"));
+				   customer.setCreatedBy((String) httpSession.getAttribute("userName"));
 				   customer.setCreatedDate(new java.util.Date());
 				    customerService.createCustomer(customer);
 				   obj.put("msgtype", "SUCCESS");
@@ -81,7 +81,7 @@ public class CustomerController {
 			   else{
 				   // add missing parameters to customers
 				   customer.setStatus(1);
-				   customer.setModifiedBy((String) httpSession.getAttribute("customerName"));
+				   customer.setModifiedBy((String) httpSession.getAttribute("userName"));
 				   customer.setModifiedDate(new java.util.Date());
 				   customerService.updateCustomer(customer);
 				   obj.put("msgtype", "SUCCESS");
@@ -113,7 +113,7 @@ public class CustomerController {
 	        System.out.println("Fetching Customer with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("customerName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
@@ -150,14 +150,14 @@ public class CustomerController {
 	        System.out.println("Deleting Customer with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("customerName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
 	        	Customer customer = customerService.getCustomer(id);
 	        	customer.setStatus(2);
-	        	customer.setModifiedBy((String) httpSession.getAttribute("customerName"));
+	        	customer.setModifiedBy((String) httpSession.getAttribute("userName"));
 	        	customer.setModifiedDate(new java.util.Date());
 	        	
 	        	customerService.updateCustomer(customer);

@@ -51,7 +51,7 @@ public class ProductBrandController {
 			   else{
 				   // add missing parameters to brand
 				   brand.setStatus(1);
-				   brand.setCreatedBy((String) httpSession.getAttribute("productbrandName"));
+				   brand.setCreatedBy((String) httpSession.getAttribute("userName"));
 				   brand.setCreatedDate(new java.util.Date());
 				    brandService.createProductBrand(brand);
 				   obj.put("msgtype", "SUCCESS");
@@ -81,7 +81,7 @@ public class ProductBrandController {
 			   else{
 				   // add missing parameters to productbrands
 				   brand.setStatus(1);
-				   brand.setModifiedBy((String) httpSession.getAttribute("productbrandName"));
+				   brand.setModifiedBy((String) httpSession.getAttribute("userName"));
 				   brand.setModifiedDate(new java.util.Date());
 				   brandService.updateProductBrand(brand);
 				   obj.put("msgtype", "SUCCESS");
@@ -157,7 +157,7 @@ public class ProductBrandController {
 	        }else{
 	        	ProductBrand brand = brandService.getProductBrand(id);
 	        	brand.setStatus(2);
-	        	brand.setModifiedBy((String) httpSession.getAttribute("productbrandName"));
+	        	brand.setModifiedBy((String) httpSession.getAttribute("userName"));
 	        	brand.setModifiedDate(new java.util.Date());
 	        	
 	        	brandService.updateProductBrand(brand);

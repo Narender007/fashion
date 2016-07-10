@@ -19,9 +19,9 @@ public class SellingPrice implements Serializable {
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.AUTO)
 	    private long id;
-	    private int productId;
-	    private int unit;
-	    private Double Price;
+	    private int productId;//productId
+	    private int unit;//unit
+	    private String price;//Price
 	    
 	    private int status;
 	    private String createdBy;
@@ -48,11 +48,11 @@ public class SellingPrice implements Serializable {
 		public void setUnit(int unit) {
 			this.unit = unit;
 		}
-		public Double getPrice() {
-			return Price;
+		public String getPrice() {
+			return price;
 		}
-		public void setPrice(Double price) {
-			Price = price;
+		public void setPrice(String price) {
+			this.price = price;
 		}
 		public int getStatus() {
 			return status;

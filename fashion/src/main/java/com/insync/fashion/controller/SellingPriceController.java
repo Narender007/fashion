@@ -1,5 +1,6 @@
 package com.insync.fashion.controller;
 
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,7 +40,7 @@ public class SellingPriceController {
 	    public ResponseEntity<String> createSellingPrice(@RequestBody SellingPrice price,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("sellingpriceName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -51,7 +53,7 @@ public class SellingPriceController {
 			   else{
 				   // add missing parameters to price
 				   price.setStatus(1);
-				   price.setCreatedBy((String) httpSession.getAttribute("sellingpriceName"));
+				   price.setCreatedBy((String) httpSession.getAttribute("userName"));
 				   price.setCreatedDate(new java.util.Date());
 				    priceService.createSellingPrice(price);
 				   obj.put("msgtype", "SUCCESS");
@@ -68,7 +70,7 @@ public class SellingPriceController {
 	    public ResponseEntity<String> updateSellingPrice(@RequestBody SellingPrice price,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("sellingpriceName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -81,7 +83,7 @@ public class SellingPriceController {
 			   else{
 				   // add missing parameters to sellingprices
 				   price.setStatus(1);
-				   price.setModifiedBy((String) httpSession.getAttribute("sellingpriceName"));
+				   price.setModifiedBy((String) httpSession.getAttribute("userName"));
 				   price.setModifiedDate(new java.util.Date());
 				   priceService.updateSellingPrice(price);
 				   obj.put("msgtype", "SUCCESS");
@@ -113,7 +115,7 @@ public class SellingPriceController {
 	        System.out.println("Fetching SellingPrice with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("sellingpriceName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
@@ -150,14 +152,14 @@ public class SellingPriceController {
 	        System.out.println("Deleting SellingPrice with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("sellingpriceName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
 	        	SellingPrice price = priceService.getSellingPrice(id);
 	        	price.setStatus(2);
-	        	price.setModifiedBy((String) httpSession.getAttribute("sellingpriceName"));
+	        	price.setModifiedBy((String) httpSession.getAttribute("userName"));
 	        	price.setModifiedDate(new java.util.Date());
 	        	
 	        	priceService.updateSellingPrice(price);

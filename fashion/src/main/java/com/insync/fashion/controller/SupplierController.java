@@ -38,7 +38,7 @@ public class SupplierController {
 	    public ResponseEntity<String> createSupplier(@RequestBody Supplier supplier,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("supplierName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -51,7 +51,7 @@ public class SupplierController {
 			   else{
 				   // add missing parameters to supplier
 				   supplier.setStatus(1);
-				   supplier.setCreatedBy((String) httpSession.getAttribute("supplierName"));
+				   supplier.setCreatedBy((String) httpSession.getAttribute("userName"));
 				   supplier.setCreatedDate(new java.util.Date());
 				    supplierService.createSupplier(supplier);
 				   obj.put("msgtype", "SUCCESS");
@@ -68,7 +68,7 @@ public class SupplierController {
 	    public ResponseEntity<String> updateSupplier(@RequestBody Supplier supplier,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("supplierName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -81,7 +81,7 @@ public class SupplierController {
 			   else{
 				   // add missing parameters to suppliers
 				   supplier.setStatus(1);
-				   supplier.setModifiedBy((String) httpSession.getAttribute("supplierName"));
+				   supplier.setModifiedBy((String) httpSession.getAttribute("userName"));
 				   supplier.setModifiedDate(new java.util.Date());
 				   supplierService.updateSupplier(supplier);
 				   obj.put("msgtype", "SUCCESS");
@@ -113,7 +113,7 @@ public class SupplierController {
 	        System.out.println("Fetching Supplier with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("supplierName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
@@ -150,14 +150,14 @@ public class SupplierController {
 	        System.out.println("Deleting Supplier with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("supplierName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
 	        	Supplier supplier = supplierService.getSupplier(id);
 	        	supplier.setStatus(2);
-	        	supplier.setModifiedBy((String) httpSession.getAttribute("supplierName"));
+	        	supplier.setModifiedBy((String) httpSession.getAttribute("userName"));
 	        	supplier.setModifiedDate(new java.util.Date());
 	        	
 	        	supplierService.updateSupplier(supplier);

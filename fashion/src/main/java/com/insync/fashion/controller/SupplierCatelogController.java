@@ -38,7 +38,7 @@ public class SupplierCatelogController {
 	    public ResponseEntity<String> createSupplierCatelog(@RequestBody SupplierCatelog catelog,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("suppliercatelogName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -51,7 +51,7 @@ public class SupplierCatelogController {
 			   else{
 				   // add missing parameters to catelog
 				   catelog.setStatus(1);
-				   catelog.setCreatedBy((String) httpSession.getAttribute("suppliercatelogName"));
+				   catelog.setCreatedBy((String) httpSession.getAttribute("userName"));
 				   catelog.setCreatedDate(new java.util.Date());
 				    catelogService.createSupplierCatelog(catelog);
 				   obj.put("msgtype", "SUCCESS");
@@ -68,7 +68,7 @@ public class SupplierCatelogController {
 	    public ResponseEntity<String> updateSupplierCatelog(@RequestBody SupplierCatelog catelog,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("suppliercatelogName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -81,7 +81,7 @@ public class SupplierCatelogController {
 			   else{
 				   // add missing parameters to suppliercatelogs
 				   catelog.setStatus(1);
-				   catelog.setModifiedBy((String) httpSession.getAttribute("suppliercatelogName"));
+				   catelog.setModifiedBy((String) httpSession.getAttribute("userName"));
 				   catelog.setModifiedDate(new java.util.Date());
 				   catelogService.updateSupplierCatelog(catelog);
 				   obj.put("msgtype", "SUCCESS");
@@ -113,7 +113,7 @@ public class SupplierCatelogController {
 	        System.out.println("Fetching SupplierCatelog with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("suppliercatelogName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
@@ -150,14 +150,14 @@ public class SupplierCatelogController {
 	        System.out.println("Deleting SupplierCatelog with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("suppliercatelogName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
 	        }else{
 	        	SupplierCatelog catelog = catelogService.getSupplierCatelog(id);
 	        	catelog.setStatus(2);
-	        	catelog.setModifiedBy((String) httpSession.getAttribute("suppliercatelogName"));
+	        	catelog.setModifiedBy((String) httpSession.getAttribute("userName"));
 	        	catelog.setModifiedDate(new java.util.Date());
 	        	
 	        	catelogService.updateSupplierCatelog(catelog);

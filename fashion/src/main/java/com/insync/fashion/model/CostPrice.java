@@ -21,7 +21,7 @@ public class CostPrice implements Serializable {
 	    private long id;
 	    private int productId;
 	    private int unit;
-	    private Double Price;
+	    private String price;
 	    
 	    private int status;
 	    private String createdBy;
@@ -48,11 +48,11 @@ public class CostPrice implements Serializable {
 		public void setUnit(int unit) {
 			this.unit = unit;
 		}
-		public Double getPrice() {
-			return Price;
+		public String getPrice() {
+			return price;
 		}
-		public void setPrice(Double price) {
-			Price = price;
+		public void setPrice(String price) {
+			this.price = price;
 		}
 		public int getStatus() {
 			return status;

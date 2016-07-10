@@ -51,7 +51,7 @@ public class ProductController {
 			   else{
 				   // add missing parameters to product
 				   product.setStatus(1);
-				   product.setCreatedBy((String) httpSession.getAttribute("productName"));
+				   product.setCreatedBy((String) httpSession.getAttribute("userName"));
 				   product.setCreatedDate(new java.util.Date());
 				    productService.createProduct(product);
 				   obj.put("msgtype", "SUCCESS");
@@ -81,7 +81,7 @@ public class ProductController {
 			   else{
 				   // add missing parameters to products
 				   product.setStatus(1);
-				   product.setModifiedBy((String) httpSession.getAttribute("productName"));
+				   product.setModifiedBy((String) httpSession.getAttribute("userName"));
 				   product.setModifiedDate(new java.util.Date());
 				   productService.updateProduct(product);
 				   obj.put("msgtype", "SUCCESS");
@@ -157,7 +157,7 @@ public class ProductController {
 	        }else{
 	        	Product product = productService.getProduct(id);
 	        	product.setStatus(2);
-	        	product.setModifiedBy((String) httpSession.getAttribute("productName"));
+	        	product.setModifiedBy((String) httpSession.getAttribute("userName"));
 	        	product.setModifiedDate(new java.util.Date());
 	        	
 	        	productService.updateProduct(product);

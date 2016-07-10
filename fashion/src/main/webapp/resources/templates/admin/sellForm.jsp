@@ -36,7 +36,7 @@
 						<div class="row">
 						<div class="col-md-6 col-xs-12 form-group">
 							<label for="price">Price (Per unit)</label>
-							<input type="text" class="form-control" name="price" ng-model="formdata.Price"  ng-model-options="{ updateOn: 'blur' }" placeholder="Price" required="">
+							<input type="text" class="form-control" name="price" ng-model="formdata.price"  ng-model-options="{ updateOn: 'blur' }" placeholder="Price" required="">
 
 						<!-- error msg handling  -->
 							<div ng-show="userform.$submitted || userform.price.$touched">
