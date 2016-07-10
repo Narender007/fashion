@@ -156,6 +156,40 @@ app.config(function($stateProvider, $urlRouterProvider) {
               templateUrl:"resources/templates/admin/brands.jsp",
               controller:"brandFormCtrl"
           })
+// product type state definitions
+          .state('admin.brandTypes',{
+              url:"/brandTypes",
+              templateUrl:"resources/templates/admin/brandTypes.jsp",
+              resolve:{
+                  productTypeData:  function($http,productTypeService){
+                      return productTypeService.fetchallproductType()
+                          .then (function (data) {
+                                  return {type:data};
+                              },
+                              function(errResponse){
+                                  return {type:{ }};
+                              });
+                  },
+              },
+              controller:"typeTableCtrl"
+          })
+
+          .state('admin.brandtype',{
+              url:"/brandtype/:id",
+              templateUrl:"resources/templates/admin/brandtype.jsp",
+              resolve:{
+                  productTypeData:  function($http,productTypeService){
+                      return productTypeService.fetchallproductType()
+                          .then (function (data) {
+                                  return {type:data};
+                              },
+                              function(errResponse){
+                                  return {type:{ }};
+                              });
+                  },
+              },
+              controller:"typeFormCtrl"
+          })
 
 });
 

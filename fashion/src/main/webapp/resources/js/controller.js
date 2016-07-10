@@ -1779,3 +1779,269 @@ angular.module("fashion_controller",[ ])
 		}
 
 	}]) // role master form control
+
+// product type 
+
+	.controller('typeTableCtrl',['$scope','productTypeData','productTypeService','$state',function($scope,productTypeData,productTypeService,$state){
+		console.log('brandTableCtrl');
+
+		$scope.productType = productTypeData.type;
+		if($scope.productType.length > 0){
+			// set the location field
+		}else{
+			/*var msgtype = "ERROR";
+			var msg = "Error Fetching Dependcy Data. Try again or contact Support";
+			$scope.masterCallbackAlert(msgtype,msg,null,function(result){
+				$state.go('admin.indoormastertable');
+			});*/
+		}
+
+		 //mapping methord
+		     $scope.getnameByID = function(id){
+				 if(id==0){
+					 return "NA";
+				 }
+				 var obj = $.grep($scope.productType,function(p,q){
+					    return p.id == id;
+				 });
+				 if(obj.length > 0){
+					 return obj[0].name;
+				 }else{
+					 return null;
+				 }
+			 };
+
+		 $scope.mapobj = function(data){
+			 for(var i = 0; i < data.length; i++){
+				 data[i].subTypeOf = $scope.getnameByID(data[i].subTypeOf);
+			 }
+			 return data;
+		 };
+		 //mapping methord ends
+
+		$scope.initEvent = function(){
+			$('#userTable tbody').on( 'click', '.tdelete', function () {
+				console.log("delete called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				// call master confirm
+				var msg = "Delete Product Type";
+				var msgBody = "Are You Sure you want to delete Product Type" + data.name;
+				$scope.masterConf(msg,msgBody,function(result){
+					if(result){
+						$scope.deleteProductType(data.id);
+					}else{
+						// you decided not to delete
+					}
+				});
+			});
+
+			$('#userTable tbody').on( 'click', '.tedit', function () {
+				console.log("edit called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				$scope.editProductType(data.id);
+			});
+		};
+
+		// function for edit
+		$scope.editProductType = function(userid){
+			// go to add or edit screen
+			var param = {};
+			param.id = userid;
+			$state.go('admin.brandType',param);
+		}
+
+		$scope.deleteProductType = function(id){
+			console.log(id);
+			productTypeService.deleteProductType(id)
+				.then(function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterAlert(responseData.msgtype,responseData.msg,null);
+						}
+						else{
+							console.log("Deleted successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$scope.fetchAllProductType();
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					});
+
+		}
+
+
+
+		$scope.userTable = null;
+		$scope.fetchAllProductType = function(){
+			if($scope.userTable != null)
+			{
+				$scope.userTable.destroy();
+			}
+			// call service methord
+			productTypeService.fetchallproductType()
+				.then(
+					function(responseData){
+						console.log(responseData);
+						$scope.userTable = $('#userTable').DataTable( {
+							"data":   $scope.mapobj(responseData) ,
+							"destroy": true,
+							"columns": [
+								{ "data": "name" },
+								{ "data": "subTypeOf" },
+								{ "data": "description" },
+								{ "data": null }
+							],
+							"columnDefs": [ {
+								"targets": -1,
+								"data": null,
+								"defaultContent": "<button class='tedit'>Edit</button><button class='tdelete'>Delete</button>"
+							}
+							]
+
+
+						});
+						// Now initialize click event for edit and delete
+						$scope.initEvent();
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		};
+
+		$scope.fetchAllBrand();
+
+	}]) // user master table control
+
+	.controller('typeFormCtrl',['$scope','productTypeData','productTypeService','$stateParams','$state',function($scope,productTypeData,productTypeService,$stateParams,$state){
+		console.log("typeFormCtrl");
+		$scope.productType = productTypeData.type;
+		if($scope.productType.length > 0){
+			// set the location field
+		}else{
+			/*var msgtype = "ERROR";
+			 var msg = "Error Fetching Dependcy Data. Try again or contact Support";
+			 $scope.masterCallbackAlert(msgtype,msg,null,function(result){
+			 $state.go('admin.indoormastertable');
+			 });*/
+		}
+
+		$scope.typeData = {};
+		if($stateParams.id == -1){
+			$scope.typeOption = "Add";
+		}
+		else{
+			$scope.typeOption = "Edit";
+			productTypeService.fetchProductTypeByID($stateParams.id)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$state.go('admin.brandTypes');
+							});
+						}
+						else{
+							var data = JSON.parse(responseData.type);
+							console.log(data);
+							$scope.formdata = angular.copy(data);
+							setTimeout(function(){
+								$scope.$apply();
+							},300)
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		}
+
+		// Reset Function
+		$scope.reset  = function(userform)
+		{
+			if (userform) {
+				userform.$setPristine();
+				userform.$setUntouched();
+			}
+			$scope.formdata = angular.copy($scope.typeData);
+		};
+
+		$scope.cancel = function(){
+			var msg = "Cancel";
+			var msgBody =  "Are you sure You want to cancel " +$scope.typeOption + " process";
+			// call the master confirm dialog
+			$scope.masterConf(msg,msgBody,function(result){
+				console.log(result);
+				if(result){
+					$state.go('admin.brandTypes');
+				}else{
+					// you decided not to cancel the process
+				}
+			});
+		};
+
+		$scope.addProductType  = function(user,ev){
+			// add brand
+			//call the add service
+			productTypeService.addProductType(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Add successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.brandTypes');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+		// edit user
+		$scope.editProductType  = function(user,ev){
+			// edit Product Type
+			//call the add service
+			productTypeService.editProductType(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Edit successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.brandTypes');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+
+		/// submit function
+		$scope.save = function(role,ev){
+			$scope.typeData = angular.copy(role);
+			console.log($scope.typeData);
+			if($scope.typeOption == "Add"){
+				$scope.addProductType($scope.typeData,ev);
+			}
+			else{
+				$scope.editProductType($scope.typeData,ev);
+			}
+		}
+
+	}]) // role master form control

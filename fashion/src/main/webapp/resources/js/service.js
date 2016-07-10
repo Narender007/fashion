@@ -518,5 +518,74 @@ angular.module("fashion_services",[ ])
 
 		}// outer return end
 	}])
+//brand service ends
 
+// brand type start
+	.service('productTypeService',['$http','$q', function($http,$q){
+		return{
+			fetchallproductType: function(){
+				return $http.get(path + '/getAllProductType/')
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while fetching Product Type');
+							return $q.reject(errResponse);
+						});
+			},   // fetchallunit
+
+			addProductType: function(data){
+				return $http.post(path + '/createProductType/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while creating Product Type');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			fetchProductTypeByID: function (data) {
+				return $http.get(path + '/getProductTypeById/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Geting Product Type by id');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // fetchRoleByID
+
+			editProductType: function(data){
+				return $http.post(path + '/updateProductType/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while updating Product Type');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+			deleteProductType: function (data) {
+				return $http.get(path + '/deleteProductType/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Deleting  Product Type');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // DeleteBrandType
+
+		}// outer return end
+	}])
 
