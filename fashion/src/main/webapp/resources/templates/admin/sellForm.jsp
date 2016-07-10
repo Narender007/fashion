@@ -33,6 +33,7 @@
 		             </div>
 				  <!-- row 1 ends -->
 					<!-- row 2 -->
+						<div class="row">
 						<div class="col-md-6 col-xs-12 form-group">
 							<label for="price">Price (Per unit)</label>
 							<input type="text" class="form-control" name="price" ng-model="formdata.Price"  ng-model-options="{ updateOn: 'blur' }" placeholder="Price" required="">
@@ -43,6 +44,7 @@
 							</div>
 						<!-- error msg handling  -->
 						</div>
+	                   </div>
 					<!-- row 2 ends -->
 
 				   <!-- row 2 -->

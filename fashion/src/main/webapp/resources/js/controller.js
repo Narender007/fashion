@@ -2535,7 +2535,7 @@ angular.module("fashion_controller",[ ])
 		$scope.save = function(role,ev){
 			$scope.sellingData = angular.copy(role);
 			console.log($scope.sellingData);
-			if($scope.productOption == "Add"){
+			if($scope.sellingOption == "Add"){
 				$scope.addSelling($scope.sellingData,ev);
 			}
 			else{
