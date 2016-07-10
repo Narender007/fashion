@@ -2286,3 +2286,261 @@ angular.module("fashion_controller",[ ])
 
 	}]) // product master form control
 
+// sell controller
+	.controller('sellCtrl',['$scope','sellService','$state',function($scope,sellService,$state){
+		console.log('sellCtrl');
+
+
+
+		$scope.initEvent = function(){
+			$('#userTable tbody').on( 'click', '.tdelete', function () {
+				console.log("delete called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				// call master confirm
+				var msg = "Delete";
+				var msgBody = "Are You Sure you want to delete ";
+				$scope.masterConf(msg,msgBody,function(result){
+					if(result){
+						$scope.deleteSelling(data.id);
+					}else{
+						// you decided not to delete
+					}
+				});
+			});
+
+			$('#userTable tbody').on( 'click', '.tedit', function () {
+				console.log("edit called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				$scope.editSelling(data.id);
+			});
+		};
+
+		// function for edit
+		$scope.editSelling = function(userid){
+			// go to add or edit screen
+			var param = {};
+			param.id = userid;
+			$state.go('admin.sellForm',param);
+		}
+
+		$scope.deleteSelling = function(id){
+			console.log(id);
+			sellService.delete(id)
+				.then(function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterAlert(responseData.msgtype,responseData.msg,null);
+						}
+						else{
+							console.log("Deleted successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$scope.fetchAllSelling();
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					});
+
+		}
+
+
+
+		$scope.userTable = null;
+		$scope.fetchAllSelling = function(){
+			if($scope.userTable != null)
+			{
+				$scope.userTable.destroy();
+			}
+			// call service methord
+			sellService.fetchall()
+				.then(
+					function(responseData){
+						console.log(responseData);
+						$scope.userTable = $('#userTable').DataTable( {
+							"data":   responseData ,
+							"destroy": true,
+							"columns": [
+								{ "data": "productId" },
+								{ "data": "unit" },
+								{ "data": "price" },
+								{ "data": null }
+							],
+							"columnDefs": [ {
+								"targets": -1,
+								"data": null,
+								"defaultContent": "<button class='tedit'>Edit</button><button class='tdelete'>Delete</button>"
+							}
+							]
+
+
+						});
+						// Now initialize click event for edit and delete
+						$scope.initEvent();
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		};
+
+		$scope.fetchAllSelling();
+
+	}]) // Selling master table control
+
+	.controller('sellFormCtrl',['$scope','unitData','productData','sellService','$stateParams','$state',function($scope,unitData,productData,sellService,$stateParams,$state){
+		console.log("sellFormCtrl");
+		$scope.product = productData.product;
+		$scope.unitData = unitData.unit;
+		if($scope.product.length < 0 ||  $scope.unitData < 0 ){
+			var msgtype = "ERROR";
+			var msg = "Error Fetching Dependcy Data. Try again or contact Support";
+			$scope.masterCallbackAlert(msgtype,msg,null,function(result){
+				$state.go('admin.sell');
+			});
+		}else{}
+
+		$scope.$watch('formdata.productId', function() {
+			console.log($scope.formdata.productId);
+			$scope.unitSelector($scope.formdata.productId);
+		});
+
+		$scope.unitSelector = function(numb){
+			if(numb == 0 || numb == undefined )
+			{
+
+			}
+			else{
+				var obj  = $.grep($scope.product,function(p,q){
+					 return p.id = numb;
+				});
+				if(obj.length > 0){
+					console.log(obj[0].defaultUnit);
+					$scope.formdata.unit = obj[0].defaultUnit;
+					setTimeout(function () {
+						$scope.$apply();
+					},300);
+				}
+			}
+			setTimeout(function(){
+				$scope.$apply();
+			},300);
+		}
+
+		$scope.sellingData = {};
+		if($stateParams.id == -1){
+			$scope.sellingOption = "Add";
+		}
+		else{
+			$scope.sellingOption = "Edit";
+			sellService.fetchByID($stateParams.id)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$state.go('admin.sell');
+							});
+						}
+						else{
+							var data = JSON.parse(responseData.product);
+							console.log(data);
+							$scope.formdata = angular.copy(data);
+							setTimeout(function(){
+								$scope.$apply();
+							},300)
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		}
+
+		// Reset Function
+		$scope.reset  = function(userform)
+		{
+			if (userform) {
+				userform.$setPristine();
+				userform.$setUntouched();
+			}
+			$scope.formdata = angular.copy($scope.sellingData);
+		};
+
+		$scope.cancel = function(){
+			var msg = "Cancel";
+			var msgBody =  "Are you sure You want to cancel " +$scope.sellingOption + " process";
+			// call the master confirm dialog
+			$scope.masterConf(msg,msgBody,function(result){
+				console.log(result);
+				if(result){
+					$state.go('admin.sell');
+				}else{
+					// you decided not to cancel the process
+				}
+			});
+		};
+
+		$scope.addSelling  = function(user,ev){
+			// add selling
+			//call the add service
+			sellService.add(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Add successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.sell');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+		// edit user
+		$scope.editSelling  = function(user,ev){
+			// edit selling
+			//call the add service
+			sellService.edit(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Edit successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.sell');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+
+		/// submit function
+		$scope.save = function(role,ev){
+			$scope.sellingData = angular.copy(role);
+			console.log($scope.sellingData);
+			if($scope.productOption == "Add"){
+				$scope.addSelling($scope.sellingData,ev);
+			}
+			else{
+				$scope.editSelling($scope.sellingData,ev);
+			}
+		}
+
+	}]) // product master form control

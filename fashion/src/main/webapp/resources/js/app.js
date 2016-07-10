@@ -191,7 +191,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
               controller:"typeFormCtrl"
           })
     
-// Main product starte definitions
+// Main product state definitions
           .state('admin.products',{
               url:"/products",
               templateUrl:"resources/templates/admin/products.jsp",
@@ -231,6 +231,39 @@ app.config(function($stateProvider, $urlRouterProvider) {
                   }
               },
               controller:"productFormCtrl"
+          })
+
+// selling price of product
+          .state('admin.sell',{
+              url:"/sell",
+              templateUrl:"resources/templates/admin/sell.jsp",
+              controller:"sellCtrl"
+          })
+
+          .state('admin.sellForm',{
+              url:"/sellForm/:id",
+              templateUrl:"resources/templates/admin/sellForm.jsp",
+              resolve:{
+                  productData:  function($http,productService){
+                      return productService.fetchallproduct()
+                          .then (function (data) {
+                                  return {product:data};
+                              },
+                              function(errResponse){
+                                  return {product:{ }};
+                              });
+                  },
+                  unitData:  function($http,unitmasterservice){
+                      return unitmasterservice.fetchallunit()
+                          .then (function (data) {
+                                  return {unit:data};
+                              },
+                              function(errResponse){
+                                  return {unit:{ }};
+                              });
+                  }
+              },
+              controller:"sellFormCtrl"
           })
 
 });

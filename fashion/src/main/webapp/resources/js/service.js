@@ -662,3 +662,73 @@ angular.module("fashion_services",[ ])
 	}])
 
 // product service ends
+//product sell service start
+	.service('sellService',['$http','$q', function($http,$q){
+		return{
+			fetchall: function(){
+				return $http.get(path + '/getAllSellingPrice/')
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while fetching Selling Price');
+							return $q.reject(errResponse);
+						});
+			},   // fetchallproduct
+
+			add: function(data){
+				return $http.post(path + '/createSellingPrice/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while creating Selling Price ');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			fetchByID: function (data) {
+				return $http.get(path + '/getSellingPriceById/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Geting Product Selling Price  by id');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // fetchRoleByID
+
+			edit: function(data){
+				return $http.post(path + '/updateSellingPrice/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while updating SellingPricecd');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			delete: function (data) {
+				return $http.get(path + '/deleteSellingPrice/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Deleting  SellingPrice ');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // DeleteBrandType
+
+		}// outer return end
+	}])
+//product sell service ends

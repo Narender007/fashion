@@ -39,11 +39,13 @@
 				<li class="dropdown">
 				<a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Product <span class="caret"></span></a>
 				<ul class="dropdown-menu">
-				<li><a ui-sref="admin.unitmastertable">Unit</a></li>
-				<li><a ui-sref="admin.unitMappingmastertable">Unit Conversion Rule</a></li>
-				<li><a ui-sref="admin.brand">Product Brand</a></li>
-				<li><a ui-sref="admin.brandTypes">Product Type</a></li>
-				<li><a ui-sref="admin.products">Product</a></li>
+					<li><a ui-sref="admin.unitmastertable">Unit</a></li>
+					<li><a ui-sref="admin.unitMappingmastertable">Unit Conversion Rule</a></li>
+					<li><a ui-sref="admin.brand">Product Brand</a></li>
+					<li><a ui-sref="admin.brandTypes">Product Type</a></li>
+					<li><a ui-sref="admin.products">Product</a></li>
+					<li><a ui-sref="admin.sell">Selling Price</a></li>
+					<li><a ui-sref="admin.cost">Cost Price</a></li>
 				</ul>
 				</li>
 				<!-- Unit dwopdown ends -->
