@@ -38,7 +38,7 @@ public class ProductTypeController {
 	    public ResponseEntity<String> createProductType(@RequestBody ProductType type,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("producttypeName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -68,7 +68,7 @@ public class ProductTypeController {
 	    public ResponseEntity<String> updateProductType(@RequestBody ProductType type,    HttpServletRequest httpRequest) {
 		   JSONObject obj  = new JSONObject();
 		   HttpSession httpSession  = httpRequest.getSession(false);
-		   if(httpSession.getAttribute("producttypeName") == null){
+		   if(httpSession.getAttribute("userName") == null){
 			   obj.put("msgtype", "ERROR");
 			   obj.put("msg", "You session has expired please login again");
 		   }
@@ -113,7 +113,7 @@ public class ProductTypeController {
 	        System.out.println("Fetching ProductType with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("producttypeName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");
@@ -150,7 +150,7 @@ public class ProductTypeController {
 	        System.out.println("Deleting ProductType with id " + id);
 	        
 	        HttpSession httpSession = httpRequest.getSession(false);
-	        if(httpSession.getAttribute("producttypeName") == null)
+	        if(httpSession.getAttribute("userName") == null)
 	        {
 	        	obj.put("msgtype", "ERROR");
 				obj.put("msg", "Your Session has expired please login to continue");

@@ -176,7 +176,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
           .state('admin.brandtype',{
               url:"/brandtype/:id",
-              templateUrl:"resources/templates/admin/brandtype.jsp",
+              templateUrl:"resources/templates/admin/brandType.jsp",
               resolve:{
                   productTypeData:  function($http,productTypeService){
                       return productTypeService.fetchallproductType()

@@ -1847,7 +1847,7 @@ angular.module("fashion_controller",[ ])
 			// go to add or edit screen
 			var param = {};
 			param.id = userid;
-			$state.go('admin.brandType',param);
+			$state.go('admin.brandtype',param);
 		}
 
 		$scope.deleteProductType = function(id){
@@ -1911,7 +1911,7 @@ angular.module("fashion_controller",[ ])
 				);
 		};
 
-		$scope.fetchAllBrand();
+		$scope.fetchAllProductType();
 
 	}]) // user master table control
 
@@ -1933,6 +1933,11 @@ angular.module("fashion_controller",[ ])
 			$scope.typeOption = "Add";
 		}
 		else{
+			// filter self object
+			 $scope.productType = $.grep($scope.productType,function(p,q){
+				   return p.id != $stateParams.id;
+			 });
+			
 			$scope.typeOption = "Edit";
 			productTypeService.fetchProductTypeByID($stateParams.id)
 				.then(
