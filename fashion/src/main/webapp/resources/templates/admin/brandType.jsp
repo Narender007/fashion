@@ -20,7 +20,7 @@
 		                </div>
 						<div class="col-md-6 col-xs-12 form-group">
 							<label for="subTypeOf">SubTypeOf : </label>
-							<select class="form-control" name="SubTypeOf" ng-model="formdata.SubTypeOf"  required="">
+							<select class="form-control" name="SubTypeOf" ng-model="formdata.subTypeOf"  required="">
 								<option  value="0">Not Applicable</option>
 								<option ng-repeat="type in productType" value="{{type.id}}">{{type.name}}</option>
 							</select>

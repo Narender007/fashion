@@ -29,7 +29,7 @@ public class ProductType implements Serializable {
 	    @Temporal (TemporalType.TIMESTAMP)
 	    private java.util.Date modifiedDate;
 	    
-	    private int subTypeOf;
+	    private int subTypeOf;//SubTypeOf
 	    
 	    public int getSubTypeOf() {
 			return subTypeOf;
