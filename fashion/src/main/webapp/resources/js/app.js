@@ -190,6 +190,39 @@ app.config(function($stateProvider, $urlRouterProvider) {
               },
               controller:"typeFormCtrl"
           })
+    
+// Main product starte definitions
+          .state('admin.products',{
+              url:"/products",
+              templateUrl:"resources/templates/admin/products.jsp",
+              controller:"productsCtrl"
+          })
+
+          .state('admin.product',{
+              url:"/product/:id",
+              templateUrl:"resources/templates/admin/product.jsp",
+              resolve:{
+                  productTypeData:  function($http,productTypeService){
+                      return productTypeService.fetchallproductType()
+                          .then (function (data) {
+                                  return {type:data};
+                              },
+                              function(errResponse){
+                                  return {type:{ }};
+                              });
+                  },
+                  productBrandData:  function($http,brandService){
+                      return brandService.fetchallbrand()
+                          .then (function (data) {
+                                  return {brand:data};
+                              },
+                              function(errResponse){
+                                  return {brand:{ }};
+                              });
+                  }
+              },
+              controller:"productFormCtrl"
+          })
 
 });
 

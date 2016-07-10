@@ -2050,3 +2050,238 @@ angular.module("fashion_controller",[ ])
 		}
 
 	}]) // role master form control
+
+// product controller
+
+	.controller('productsCtrl',['$scope','productService','$state',function($scope,productService,$state){
+		console.log('productsCtrl');
+
+
+
+		$scope.initEvent = function(){
+			$('#userTable tbody').on( 'click', '.tdelete', function () {
+				console.log("delete called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				// call master confirm
+				var msg = "Delete Product";
+				var msgBody = "Are You Sure you want to delete Product" + data.name;
+				$scope.masterConf(msg,msgBody,function(result){
+					if(result){
+						$scope.deleteProduct(data.id);
+					}else{
+						// you decided not to delete
+					}
+				});
+			});
+
+			$('#userTable tbody').on( 'click', '.tedit', function () {
+				console.log("edit called");
+				var data = $scope.userTable.row( $(this).parents('tr') ).data();
+				$scope.editProductType(data.id);
+			});
+		};
+
+		// function for edit
+		$scope.editProduct = function(userid){
+			// go to add or edit screen
+			var param = {};
+			param.id = userid;
+			$state.go('admin.product',param);
+		}
+
+		$scope.deleteProduct = function(id){
+			console.log(id);
+			productService.deleteProduct(id)
+				.then(function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterAlert(responseData.msgtype,responseData.msg,null);
+						}
+						else{
+							console.log("Deleted successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$scope.fetchAllProduct();
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					});
+
+		}
+
+
+
+		$scope.userTable = null;
+		$scope.fetchAllProduct = function(){
+			if($scope.userTable != null)
+			{
+				$scope.userTable.destroy();
+			}
+			// call service methord
+			productService.fetchallproduct()
+				.then(
+					function(responseData){
+						console.log(responseData);
+						$scope.userTable = $('#userTable').DataTable( {
+							"data":   $scope.mapobj(responseData) ,
+							"destroy": true,
+							"columns": [
+								{ "data": "name" },
+								{ "data": "productType" },
+								{ "data": "productBran" },
+								{ "data": "description" },
+								{ "data": null }
+							],
+							"columnDefs": [ {
+								"targets": -1,
+								"data": null,
+								"defaultContent": "<button class='tedit'>Edit</button><button class='tdelete'>Delete</button>"
+							}
+							]
+
+
+						});
+						// Now initialize click event for edit and delete
+						$scope.initEvent();
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		};
+
+		$scope.fetchAllProduct();
+
+	}]) // user master table control
+
+	.controller('productFormCtrl',['$scope','productTypeData','productBrandData','productService','$stateParams','$state',function($scope,productTypeData,productBrandData,productService,$stateParams,$state){
+		console.log("productFormCtrl");
+		$scope.productType = productTypeData.type;
+		$scope.productBrand = productBrandData.brand;
+		if($scope.productType.length < 0 || $scope.productBrand < 0){
+			var msgtype = "ERROR";
+			 var msg = "Error Fetching Dependcy Data. Try again or contact Support";
+			 $scope.masterCallbackAlert(msgtype,msg,null,function(result){
+			 $state.go('admin.products');
+			 });
+		}else{}
+
+		$scope.productData = {};
+		if($stateParams.id == -1){
+			$scope.productOption = "Add";
+		}
+		else{
+			$scope.productOption = "Edit";
+			productService.fetchProductByID($stateParams.id)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,null,function(result){
+								$state.go('admin.products');
+							});
+						}
+						else{
+							var data = JSON.parse(responseData.product);
+							console.log(data);
+							$scope.formdata = angular.copy(data);
+							setTimeout(function(){
+								$scope.$apply();
+							},300)
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",null);
+					}
+				);
+		}
+
+		// Reset Function
+		$scope.reset  = function(userform)
+		{
+			if (userform) {
+				userform.$setPristine();
+				userform.$setUntouched();
+			}
+			$scope.formdata = angular.copy($scope.productData);
+		};
+
+		$scope.cancel = function(){
+			var msg = "Cancel";
+			var msgBody =  "Are you sure You want to cancel " +$scope.productOption + " process";
+			// call the master confirm dialog
+			$scope.masterConf(msg,msgBody,function(result){
+				console.log(result);
+				if(result){
+					$state.go('admin.products');
+				}else{
+					// you decided not to cancel the process
+				}
+			});
+		};
+
+		$scope.addProduct  = function(user,ev){
+			// add brand
+			//call the add service
+			productService.addProduct(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Add successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.products');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+		// edit user
+		$scope.editProduct  = function(user,ev){
+			// edit Product Type
+			//call the add service
+			productService.editProduct(user)
+				.then(
+					function(responseData){
+						if(responseData.msgtype == "ERROR")
+						{
+							// error in login
+							$scope.masterAlert(responseData.msgtype,responseData.msg,ev);
+						}
+						else{
+							console.log("Edit successful");
+							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
+								$state.go('admin.product');
+							});
+						}
+					},
+					function(errResponse){
+						$scope.masterAlert("ERROR","Unexpected Error Occured",ev);
+					}
+				);
+		};
+
+
+		/// submit function
+		$scope.save = function(role,ev){
+			$scope.productData = angular.copy(role);
+			console.log($scope.productData);
+			if($scope.productOption == "Add"){
+				$scope.addProduct($scope.productData,ev);
+			}
+			else{
+				$scope.editProduct($scope.productData,ev);
+			}
+		}
+
+	}]) // product master form control
+

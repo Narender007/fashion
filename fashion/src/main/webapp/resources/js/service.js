@@ -588,4 +588,77 @@ angular.module("fashion_services",[ ])
 
 		}// outer return end
 	}])
+// brand type service ends
 
+// product service starts
+
+	.service('productService',['$http','$q', function($http,$q){
+		return{
+			fetchallproduct: function(){
+				return $http.get(path + '/getAllProduct/')
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while fetching Product');
+							return $q.reject(errResponse);
+						});
+			},   // fetchallproduct
+
+			addProduct: function(data){
+				return $http.post(path + '/createProduct/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while creating Product ');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			fetchProductByID: function (data) {
+				return $http.get(path + '/getProductById/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Geting Product  by id');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // fetchRoleByID
+
+			editProduct: function(data){
+				return $http.post(path + '/updateProduct/',data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while updating Product');
+							return $q.reject(errResponse);
+						}
+					);
+			},
+
+			deleteProduct: function (data) {
+				return $http.get(path + '/deleteProduct/'+data)
+					.then(
+						function(response){
+							return response.data;
+						},
+						function(errResponse){
+							console.error('Error while Deleting  Product ');
+							return $q.reject(errResponse);
+						}
+					);
+			}, // DeleteBrandType
+
+		}// outer return end
+	}])
+
+// product service ends
