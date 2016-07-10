@@ -219,6 +219,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
                               function(errResponse){
                                   return {brand:{ }};
                               });
+                  },
+                  unitData:  function($http,unitmasterservice){
+                      return unitmasterservice.fetchallunit()
+                          .then (function (data) {
+                                  return {unit:data};
+                              },
+                              function(errResponse){
+                                  return {unit:{ }};
+                              });
                   }
               },
               controller:"productFormCtrl"

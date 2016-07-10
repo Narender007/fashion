@@ -2155,11 +2155,12 @@ angular.module("fashion_controller",[ ])
 
 	}]) // user master table control
 
-	.controller('productFormCtrl',['$scope','productTypeData','productBrandData','productService','$stateParams','$state',function($scope,productTypeData,productBrandData,productService,$stateParams,$state){
+	.controller('productFormCtrl',['$scope','unitData','productTypeData','productBrandData','productService','$stateParams','$state',function($scope,unitData,productTypeData,productBrandData,productService,$stateParams,$state){
 		console.log("productFormCtrl");
 		$scope.productType = productTypeData.type;
 		$scope.productBrand = productBrandData.brand;
-		if($scope.productType.length < 0 || $scope.productBrand < 0){
+		$scope.unitData = unitData.unit;
+		if($scope.productType.length < 0 || $scope.productBrand < 0 || $scope.unitData < 0 ){
 			var msgtype = "ERROR";
 			 var msg = "Error Fetching Dependcy Data. Try again or contact Support";
 			 $scope.masterCallbackAlert(msgtype,msg,null,function(result){

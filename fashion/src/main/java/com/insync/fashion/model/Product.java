@@ -25,6 +25,7 @@ public class Product implements Serializable {
 	    private int productBran;
 	    private int barcode;
 	    private String imgUrl;
+	    private String defaultUnit;
 	    
 	    private int status;
 	    private String createdBy;
@@ -104,6 +105,12 @@ public class Product implements Serializable {
 		}
 		public void setImgUrl(String imgUrl) {
 			this.imgUrl = imgUrl;
+		}
+		public String getDefaultUnit() {
+			return defaultUnit;
+		}
+		public void setDefaultUnit(String defaultUnit) {
+			this.defaultUnit = defaultUnit;
 		}
 		
 		

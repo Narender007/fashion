@@ -44,12 +44,28 @@
 							<!-- error msg handling  -->
 						</div>
 						<div class="col-md-6 col-xs-12 form-group">
-							<label for="Description">Description</label>
-							<textarea class="form-control" name="Description" ng-model="formdata.description" rows="5" ng-model-options="{ updateOn: 'blur' }" placeholder="Product Description/Note" ></textarea>
+							<label for="Product Brand"> Default Selling/Purchase Unit</label>
+							<select class="form-control" name="defaultUnit"  ng-model="formdata.defaultUnit">
+								<option ng-repeat="unit in unitData" value="{{unit.id}}">{{unit.name}}</option>
+							</select>
+							<!-- error msg handling  -->
+							<div ng-show="userform.$submitted || userform.productBran.$touched">
+								<div class="alert alert-danger" ng-show="userform.productBran.$error.required" role="alert">Field  is required </div>
+							</div>
+							<!-- error msg handling  -->
 						</div>
 					</div>
 					<!-- row 2 ends -->
 
+					<!-- row 3 -->
+					<div class="row">
+						
+						<div class="col-md-6 col-xs-12 form-group">
+							<label for="Description">Description</label>
+							<textarea class="form-control" name="Description" ng-model="formdata.description" rows="5" ng-model-options="{ updateOn: 'blur' }" placeholder="Product Description/Note" ></textarea>
+						</div>
+					</div>
+					<!-- row 3 ends -->
 				   <!-- row 2 -->
 		             <div class="row" style="text-align:center;">
 		                 <input  type="button" class="btn btn-warning" ng-click="cancel()" value="Cancel" />
