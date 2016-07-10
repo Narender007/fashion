@@ -2064,7 +2064,7 @@ angular.module("fashion_controller",[ ])
 				var data = $scope.userTable.row( $(this).parents('tr') ).data();
 				// call master confirm
 				var msg = "Delete Product";
-				var msgBody = "Are You Sure you want to delete Product" + data.name;
+				var msgBody = "Are You Sure you want to delete Product " + data.name;
 				$scope.masterConf(msg,msgBody,function(result){
 					if(result){
 						$scope.deleteProduct(data.id);
@@ -2077,7 +2077,7 @@ angular.module("fashion_controller",[ ])
 			$('#userTable tbody').on( 'click', '.tedit', function () {
 				console.log("edit called");
 				var data = $scope.userTable.row( $(this).parents('tr') ).data();
-				$scope.editProductType(data.id);
+				$scope.editProduct(data.id);
 			});
 		};
 
@@ -2124,7 +2124,7 @@ angular.module("fashion_controller",[ ])
 					function(responseData){
 						console.log(responseData);
 						$scope.userTable = $('#userTable').DataTable( {
-							"data":   $scope.mapobj(responseData) ,
+							"data":   responseData ,
 							"destroy": true,
 							"columns": [
 								{ "data": "name" },
@@ -2260,7 +2260,7 @@ angular.module("fashion_controller",[ ])
 						else{
 							console.log("Edit successful");
 							$scope.masterCallbackAlert(responseData.msgtype,responseData.msg,ev,function(result){
-								$state.go('admin.product');
+								$state.go('admin.products');
 							});
 						}
 					},

@@ -43,6 +43,7 @@
 				<li><a ui-sref="admin.unitMappingmastertable">Unit Conversion Rule</a></li>
 				<li><a ui-sref="admin.brand">Product Brand</a></li>
 				<li><a ui-sref="admin.brandTypes">Product Type</a></li>
+				<li><a ui-sref="admin.products">Product</a></li>
 				</ul>
 				</li>
 				<!-- Unit dwopdown ends -->

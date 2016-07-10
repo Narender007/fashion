@@ -35,7 +35,7 @@
 						<div class="col-md-6 col-xs-12 form-group">
 							<label for="Product Brand"> Product Brand</label>
 							<select class="form-control" name="productbrand" ng-model="formdata.productBran">
-								<option ng-repeat="brand in productbrand" value="{{brand.id}}">{{brand.name}}</option>
+								<option ng-repeat="brand in productBrand" value="{{brand.id}}">{{brand.name}}</option>
 							</select>
 							<!-- error msg handling  -->
 							<div ng-show="userform.$submitted || userform.productBran.$touched">

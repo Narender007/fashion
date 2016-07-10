@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
      
      
-     <md-button class="md-fab md-primary navbar-right" aria-label="Use Android" ng-click="editBrand(-1)">
+     <md-button class="md-fab md-primary navbar-right" aria-label="Use Android" ng-click="editProduct(-1)">
           <i class="fa fa-user-plus"></i>
      </md-button>
  
